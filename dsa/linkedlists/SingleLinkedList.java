@@ -8,14 +8,16 @@ public class SingleLinkedList {
 
     public static void main(String[] args) {
         SingleLinkedList singleLinkedList = new SingleLinkedList();
-        int[] data = {1, 2, 3, 4, 5, 6, 7, 8, 9, 0};
-        singleLinkedList.createNewNode(data);
+        int[] dataArray = {1, 2, 3, 4, 5, 6, 7, 8, 9, 0};
         singleLinkedList.insertElementAt(1, 10);
-        singleLinkedList.deleteElement(111);
+        singleLinkedList.insertElementAt(dataArray);
+        singleLinkedList.deleteElementAt(111);
+        singleLinkedList.searchElement(10);
         singleLinkedList.traverseLinkedList();
     }
-    private void deleteElement(int index){
-        if(index<1 || index>count){
+
+    private void deleteElementAt(int index) {
+        if (index < 1 || index > count || index < 0) {
             System.out.println("invalid index or empty list");
             return;
         }
@@ -26,47 +28,65 @@ public class SingleLinkedList {
         temp.next = temp.next.next;
         count--;
     }
-    private void insertElementAt(int index, int data) {
+
+    private void insertElementAt(int data, int index) {
         SNode snode = new SNode(data);
         count++;
         if (head == null) {
             head = tail = snode;
             if (index > 0)
-                System.out.println("List is empty: inserting as head...");
+                System.out.println("list is empty, inserting as head....\n");
             else
-                System.out.println("inserted the record");
+                System.out.println("inserted the first record....\n");
         } else {
-            if(index==1){
-                snode.next = head;
-                head = snode;
-            } else {
-                temp = head;
-                for (int i = 1; i < index - 1; i++) {
-                    temp = temp.next;
-                }
-                snode.next = temp.next;
-                temp.next = snode;
+            temp = head;
+            for (int i = 1; i < index - 1; i++) {
+                temp = temp.next;
             }
+            snode.next = temp.next;
+            temp.next = snode;
+            System.out.println("inserted new element [" + data + "] at index [" + index + "]\n");
         }
 
     }
+
+    private void insertElementAt(int[] dataArray) {
+        for(int data:dataArray) {
+            SNode snode = new SNode(data);
+            count++;
+            if (head == null) {
+                System.out.println("list is empty, inserting as head....\n");
+                head = tail = snode;
+            } else {
+                System.out.println("inserting element at end of list....\n");
+                tail.next = snode;
+                tail = snode;
+            }
+        }
+    }
+
     private void traverseLinkedList() {
+        if (head == null) {
+            System.out.println("Empty List...");
+            return;
+        }
         for (SNode node = head; node != null; node = node.next) {
             System.out.print(node.data);
             System.out.print(" ");
         }
     }
-    private void createNewNode(int[] data) {
-        for (int d : data) {
-            SNode snode = new SNode(d);
-            if (head == null) {
-                head = snode;
-                tail = snode;
-            } else {
-                tail.next = snode;
-                tail = snode;
+
+    private void searchElement(int data){
+        int indexOfElement =0;
+        for(SNode temp=head;temp!=null;temp=temp.next){
+            indexOfElement++;
+            if(temp.data == data){
+                System.out.println("["+data+"] found at index["+indexOfElement+"]\n");
+                return;
             }
-            count++;
+        }
+        if(indexOfElement==count){
+            System.out.println("["+data+"] not there in the list\n");
         }
     }
 }
