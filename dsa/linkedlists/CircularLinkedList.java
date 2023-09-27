@@ -14,12 +14,46 @@ public class CircularLinkedList {
         circularLinkedList.insertData(data1);
         circularLinkedList.insertData(data, 1);
         circularLinkedList.insertData(singleData);
-        circularLinkedList.insertData(singleData,1);
+        circularLinkedList.insertData(singleData, 1);
+        circularLinkedList.deleteData();
+        circularLinkedList.deleteDataAt(1);
         circularLinkedList.traverseCircularLinkedList(head);
     }
-    private void insertData(int data) { insertData(new int[] {data}); }
-    private void insertData(int data, int index) { insertData(new int[] {data},index); }
-    private void insertData(int[] data) { insertData(data, count); }
+
+    private void deleteDataAt(int index) {
+        temp = head;
+        if (index < 2 && head != null) {
+            head = head.next;
+            tail.next = head;
+        } else if (index <= count) {
+            for (int i = 1; i < index - 1; i++) {
+                temp = temp.next;
+            }
+            if (temp.next != null) {
+                temp.next = temp.next.next;
+            } else {
+                temp.next = null;
+            }
+        }
+        count--;
+    }
+
+    private void deleteData() {
+
+    }
+
+    private void insertData(int data) {
+        insertData(new int[]{data});
+    }
+
+    private void insertData(int data, int index) {
+        insertData(new int[]{data}, index);
+    }
+
+    private void insertData(int[] data) {
+        insertData(data, count);
+    }
+
     private void insertData(int[] data, int index) {
         CNode hold = null;
         CNode startNode = null;
@@ -30,7 +64,7 @@ public class CircularLinkedList {
             CNode cnode = new CNode(d);
             if (startNode == null) {
                 startNode = cnode;
-                endNode =cnode;
+                endNode = cnode;
             }
             endNode.next = cnode;
             endNode = cnode;
@@ -51,14 +85,14 @@ public class CircularLinkedList {
             temp.next = startNode;
             tail = endNode;
             tail.next = hold;
-        }
-        else if(index==count){
-            tail.next=startNode;
+        } else if (index == count) {
+            tail.next = startNode;
             tail = endNode;
             tail.next = head;
         }
         count = count + noOfElemnts;
     }
+
     private void traverseCircularLinkedList(CNode temp) {
         for (int i = 0; i < count; i++) {
             System.out.print(temp.data + "--> ");
