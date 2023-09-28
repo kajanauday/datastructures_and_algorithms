@@ -1,4 +1,5 @@
 package dsa.linkedlists;
+import java.util.Scanner;
 
 public class SingleLinkedList {
     SNode head = null;
@@ -8,85 +9,191 @@ public class SingleLinkedList {
 
     public static void main(String[] args) {
         SingleLinkedList singleLinkedList = new SingleLinkedList();
-        int[] dataArray = {1, 2, 3, 4, 5, 6, 7, 8, 9, 0};
-        singleLinkedList.insertElementAt(1, 10);
-        singleLinkedList.insertElementAt(dataArray);
-        singleLinkedList.deleteElementAt(111);
-        singleLinkedList.searchElement(10);
-        singleLinkedList.traverseLinkedList();
+        boolean isUserWantsToContinue;
+        int[] dataArray;
+        int index;
+        Scanner scanner = new Scanner(System.in);
+        int noOfElements;
+        do{
+            try{
+                System.out.println("*****************************************************");
+                System.out.print("""
+                        Select transaction:
+                        \t2 Insert|index
+                        \t1 Insert
+                        \t3 Delete
+                        \t4 Delete|index
+                        \t5 Search
+                        \t6 Count
+                        \t7 TraversePlease enter your option:""");
+                int option = scanner.nextInt();
+                System.out.println("*****************************************************");
+                switch (option) {
+                    case 1 -> {
+                        System.out.println("-----------------------------------------------------------");
+                        System.out.print("enter number or elements to insert: ");
+                        noOfElements = scanner.nextInt();
+                        dataArray = new int[noOfElements];
+                        for (int i = 0; i < noOfElements; i++) {
+                            System.out.print("Enter [" + (i + 1) + "] Element: ");
+                            dataArray[i] = scanner.nextInt();
+                        }
+                        singleLinkedList.insertData(dataArray, singleLinkedList.count);
+                        System.out.println("------------------------------------------------------------");
+                    }
+                    case 2 -> {
+                        System.out.println("-----------------------------------------------------------");
+                        System.out.println("enter number or elements to insert: ");
+                        noOfElements = scanner.nextInt();
+                        dataArray = new int[noOfElements];
+                        for (int i = 0; i < noOfElements; i++) {
+                            System.out.print("Enter [" + (i + 1) + "] Element: ");
+                            dataArray[i] = scanner.nextInt();
+                        }
+                        System.out.println("Enter index: ");
+                        index = scanner.nextInt();
+                        singleLinkedList.insertData(dataArray, index);
+                        System.out.println("------------------------------------------------------------");
+                    }
+                    case 3 -> {
+                        System.out.println("-----------------------------------------------------------");
+                        System.out.print("Enter data to delete:");
+                        singleLinkedList.deleteData(scanner.nextInt());
+                        System.out.println("-----------------------------------------------------------");
+                    }
+                    case 4 -> {
+                        System.out.println("-----------------------------------------------------------");
+                        System.out.print("Enter index to delete:");
+                        singleLinkedList.deleteDataAt(scanner.nextInt());
+                        System.out.println("-----------------------------------------------------------");
+                    }
+                    case 5 -> {
+                        System.out.println("-----------------------------------------------------------");
+                        System.out.print("Enter element to search:");
+                        System.out.println(singleLinkedList.searchData(scanner.nextInt()));
+                        System.out.println("-----------------------------------------------------------");
+                    }
+                    case 6 -> System.out.println("Number of Elements in list:"+singleLinkedList.count);
+                    case 7 -> {
+                        System.out.println("-----------------------------------------------------------");
+                        singleLinkedList.traverseCircularLinkedList(singleLinkedList.head);
+                        System.out.println("-----------------------------------------------------------");
+                    }
+                    default -> System.out.println("---Invalid option selected---");
+                }
+            } catch(Exception e){
+                System.out.println("invalid transaction...  press any key to continue");
+                scanner.next();
+            }
+            System.out.print("do you want to continue[y/n]:");
+            isUserWantsToContinue =  scanner.next().equalsIgnoreCase("Y");
+            System.out.println("-----------------------------------------------------------");
+        }while (isUserWantsToContinue);
     }
 
-    private void deleteElementAt(int index) {
-        if (index < 1 || index > count || index < 0) {
-            System.out.println("invalid index or empty list");
-            return;
+    private void deleteData(int data) {
+        boolean nodeFound = false;
+        if(head!=null && head.data == data){
+            if(head.next==null)
+                head=tail=null;
+            else head=head.next;
+            nodeFound = true;
         }
-        temp = head;
-        for (int i = 1; i < index - 1; i++) {
-            temp = temp.next;
+        else {
+            SNode snode = head;
+            while (snode!= null) {
+                if (snode.next.data == data) {
+                    if (snode.next == tail) {
+                        tail = snode;
+                    }
+                    snode.next = snode.next.next;
+                    nodeFound = true;
+                    break;
+                }
+                snode = snode.next;
+            }
         }
-        temp.next = temp.next.next;
-        count--;
-    }
-
-    private void insertElementAt(int data, int index) {
-        SNode snode = new SNode(data);
-        count++;
-        if (head == null) {
-            head = tail = snode;
-            if (index > 0)
-                System.out.println("list is empty, inserting as head....\n");
-            else
-                System.out.println("inserted the first record....\n");
+        if (nodeFound) {
+            System.out.println("Element deleted");
+            count--;
         } else {
-            temp = head;
+            System.out.println("No such element in list");
+        }
+    }
+
+    private boolean searchData(int data) {
+        for(SNode snode = head;snode!=null;snode = snode.next){
+            if(snode.data==data){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void deleteDataAt(int index) {
+        temp = head;
+        if (index < 2 && head != null) {
+            head = head.next;
+        } else if (index <= count) {
             for (int i = 1; i < index - 1; i++) {
                 temp = temp.next;
             }
-            snode.next = temp.next;
-            temp.next = snode;
-            System.out.println("inserted new element [" + data + "] at index [" + index + "]\n");
-        }
-
-    }
-
-    private void insertElementAt(int[] dataArray) {
-        for(int data:dataArray) {
-            SNode snode = new SNode(data);
-            count++;
-            if (head == null) {
-                System.out.println("list is empty, inserting as head....\n");
-                head = tail = snode;
+            if (temp.next != null) {
+                temp.next = temp.next.next;
             } else {
-                System.out.println("inserting element at end of list....\n");
-                tail.next = snode;
-                tail = snode;
+                temp.next = null;
             }
         }
-    }
-
-    private void traverseLinkedList() {
-        if (head == null) {
-            System.out.println("Empty List...");
+        else {
+            System.out.println("Invalid index");
             return;
         }
-        for (SNode node = head; node != null; node = node.next) {
-            System.out.print(node.data);
-            System.out.print(" ");
-        }
+        count--;
     }
 
-    private void searchElement(int data){
-        int indexOfElement =0;
-        for(SNode temp=head;temp!=null;temp=temp.next){
-            indexOfElement++;
-            if(temp.data == data){
-                System.out.println("["+data+"] found at index["+indexOfElement+"]\n");
-                return;
+    private void traverseCircularLinkedList(SNode head) {
+        for(SNode snode = head; snode!=null;snode=snode.next){
+            System.out.print(snode.data+"-->");
+        }
+        System.out.println("null");
+    }
+
+    private void insertData(int[] data, int index) {
+        if(index>count)
+            index=count;
+        SNode hold = null;
+        SNode startNode = null;
+        SNode endNode = null;
+        int noOfElements = 0;
+        temp = head;
+        for (int d : data) {
+            SNode snode = new SNode(d);
+            if (startNode == null) {
+                startNode = snode;
+                endNode = snode;
             }
+            endNode.next = snode;
+            endNode = snode;
+            noOfElements++;
         }
-        if(indexOfElement==count){
-            System.out.println("["+data+"] not there in the list\n");
+        if (head == null && tail == null) {
+            head = startNode;
+            tail = endNode;
+            tail.next = null;
+        } else if (index < 2) {
+            endNode.next = head;
+            head = startNode;
+        } else if (index < count) {
+            for (int i = 1; i < index - 1; i++) {
+                temp = temp.next;
+            }
+            endNode.next = temp.next;
+            temp.next = startNode;
+        } else if (index == count) {
+            tail.next = startNode;
+            tail = endNode;
+            tail.next = null;
         }
+        count = count + noOfElements;
     }
 }
