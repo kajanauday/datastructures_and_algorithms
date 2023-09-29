@@ -24,7 +24,7 @@ public class SingleLinkedList {
         int noOfElements;
         do{
             try{
-                System.out.println("*****************************************************");
+                System.out.println("****************************** SINGLY LINKED LIST ******************************");
                 System.out.print("""
                         Select transaction:
                         \t2 Insert|index
@@ -35,7 +35,7 @@ public class SingleLinkedList {
                         \t6 Count
                         \t7 TraversePlease enter your option:""");
                 int option = scanner.nextInt();
-                System.out.println("*****************************************************");
+                System.out.println("****************************** SINGLY LINKED LIST ******************************");
                 switch (option) {
                     case 1 -> {
                         System.out.println("-----------------------------------------------------------");

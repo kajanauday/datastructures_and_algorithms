@@ -27,6 +27,7 @@ public class CircularLinkedList {
         int noOfElements;
         do{
         try{
+            System.out.println("****************************** CIRCULAR LINKED LIST ******************************");
             System.out.print("""
                    Select transaction:
                     \t1 Insert
@@ -37,6 +38,7 @@ public class CircularLinkedList {
                     \t6 Delete|index
                   Please enter your option:""");
             int option = scanner.nextInt();
+            System.out.println("****************************** CIRCULAR LINKED LIST ******************************");
             switch (option) {
                 case 1 -> {
                     System.out.println("-----------------------------------------------------------");
