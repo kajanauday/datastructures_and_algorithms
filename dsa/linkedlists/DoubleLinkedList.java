@@ -1,22 +1,25 @@
 package dsa.linkedlists;
+
 import java.util.Scanner;
 
-public class SingleLinkedList {
-    class SNode{
+public class DoubleLinkedList {
+    class DNode {
         int data;
-        SNode next;
-        SNode(int data){
+        DNode prev;
+        DNode next;
+        public DNode(int data){
             this.data = data;
-            this.next = null;
+            next = null;
+            prev = null;
         }
     }
-    SNode head = null;
-    SNode tail = null;
-    SNode temp = null;
-    int count = 0;
+    private int count;
+    DNode head = null;
+    DNode tail = null;
+    DNode temp = null;
 
-    public static void main(String[] args) {
-        SingleLinkedList singleLinkedList = new SingleLinkedList();
+    public static void main(String[] args){
+        DoubleLinkedList doubleLinkedList = new DoubleLinkedList();
         boolean isUserWantsToContinue;
         int[] dataArray;
         int index;
@@ -27,13 +30,15 @@ public class SingleLinkedList {
                 System.out.println("*****************************************************");
                 System.out.print("""
                         Select transaction:
-                        \t2 Insert|index
                         \t1 Insert
+                        \t2 Insert|Index
                         \t3 Delete
-                        \t4 Delete|index
+                        \t4 Delete|Index
                         \t5 Search
                         \t6 Count
-                        \t7 TraversePlease enter your option:""");
+                        \t7 Traverse
+                        \t8 Reverse Traverse
+                        Please enter your option:""");
                 int option = scanner.nextInt();
                 System.out.println("*****************************************************");
                 switch (option) {
@@ -46,12 +51,12 @@ public class SingleLinkedList {
                             System.out.print("Enter [" + (i + 1) + "] Element: ");
                             dataArray[i] = scanner.nextInt();
                         }
-                        singleLinkedList.insertData(dataArray, singleLinkedList.count);
+                        doubleLinkedList.insertData(dataArray, doubleLinkedList.count);
                         System.out.println("------------------------------------------------------------");
                     }
                     case 2 -> {
                         System.out.println("-----------------------------------------------------------");
-                        System.out.println("enter number or elements to insert: ");
+                        System.out.print("enter number or elements to insert: ");
                         noOfElements = scanner.nextInt();
                         dataArray = new int[noOfElements];
                         for (int i = 0; i < noOfElements; i++) {
@@ -60,31 +65,36 @@ public class SingleLinkedList {
                         }
                         System.out.println("Enter index: ");
                         index = scanner.nextInt();
-                        singleLinkedList.insertData(dataArray, index);
+                        doubleLinkedList.insertData(dataArray, index);
                         System.out.println("------------------------------------------------------------");
                     }
                     case 3 -> {
                         System.out.println("-----------------------------------------------------------");
                         System.out.print("Enter data to delete:");
-                        singleLinkedList.deleteData(scanner.nextInt());
+                        System.out.println(doubleLinkedList.searchAndDelete(scanner.nextInt(),true));
                         System.out.println("-----------------------------------------------------------");
                     }
                     case 4 -> {
                         System.out.println("-----------------------------------------------------------");
                         System.out.print("Enter index to delete:");
-                        singleLinkedList.deleteDataAt(scanner.nextInt());
+                        doubleLinkedList.deleteDataAt(scanner.nextInt());
                         System.out.println("-----------------------------------------------------------");
                     }
                     case 5 -> {
                         System.out.println("-----------------------------------------------------------");
                         System.out.print("Enter element to search:");
-                        System.out.println(singleLinkedList.searchData(scanner.nextInt()));
+                        System.out.println(doubleLinkedList.searchAndDelete(scanner.nextInt(),false));
                         System.out.println("-----------------------------------------------------------");
                     }
-                    case 6 -> System.out.println("Number of Elements in list:"+singleLinkedList.count);
+                    case 6 -> System.out.println("Number of Elements in list:"+doubleLinkedList.count);
                     case 7 -> {
                         System.out.println("-----------------------------------------------------------");
-                        singleLinkedList.traverseCircularLinkedList(singleLinkedList.head);
+                        doubleLinkedList.traverse();
+                        System.out.println("-----------------------------------------------------------");
+                    }
+                    case 8 -> {
+                        System.out.println("-----------------------------------------------------------");
+                        doubleLinkedList.reverseTraverse();
                         System.out.println("-----------------------------------------------------------");
                     }
                     default -> System.out.println("---Invalid option selected---");
@@ -97,61 +107,50 @@ public class SingleLinkedList {
             isUserWantsToContinue =  scanner.next().equalsIgnoreCase("Y");
             System.out.println("-----------------------------------------------------------");
         }while (isUserWantsToContinue);
-        scanner.close();
     }
 
-    private void deleteData(int data) {
-        boolean nodeFound = false;
-        if(head!=null && head.data == data){
-            if(head.next==null)
-                head=tail=null;
-            else head=head.next;
-            nodeFound = true;
-        }
-        else {
-            SNode snode = head;
-            while (snode!= null) {
-                if (snode.next.data == data) {
-                    if (snode.next == tail) {
-                        tail = snode;
+    private String searchAndDelete(int data, boolean deleteRequired) {
+        for(DNode dnode = head; dnode!=null;dnode=dnode.next) {
+            if (dnode.data == data) {
+                if (deleteRequired) {
+                    if (dnode == head) {
+                        head = head.next;
+                        head.prev = null;
+                    } else if (dnode == tail) {
+                        tail = tail.prev;
+                        tail.next = null;
+                    } else {
+                        if (dnode.prev != null) {
+                            dnode.prev.next = dnode.next;
+                        }
+                        if (dnode.next != null) {
+                            dnode.next.prev = dnode.prev;
+                        }
                     }
-                    snode.next = snode.next.next;
-                    nodeFound = true;
-                    break;
+                    count--;
+                    return "Delete Done!!";
                 }
-                snode = snode.next;
+                return "Data Found!!";
             }
         }
-        if (nodeFound) {
-            System.out.println("Element deleted");
-            count--;
-        } else {
-            System.out.println("No such element in list");
-        }
-    }
-
-    private boolean searchData(int data) {
-        for(SNode snode = head;snode!=null;snode = snode.next){
-            if(snode.data==data){
-                return true;
-            }
-        }
-        return false;
+        return "Data not Found!!";
     }
 
     private void deleteDataAt(int index) {
         temp = head;
         if (index < 2 && head != null) {
             head = head.next;
+            head.prev = null;
+            System.out.println("Head node deleted");
         } else if (index <= count) {
-            for (int i = 1; i < index - 1; i++) {
+            for (int i = 1; i < index; i++) {
                 temp = temp.next;
             }
-            if (temp.next != null) {
-                temp.next = temp.next.next;
-            } else {
-                temp.next = null;
-            }
+            if(temp.next!=null)
+                temp.next.prev= temp.prev;
+            if(temp.prev!=null)
+                temp.prev.next = temp.next;
+            System.out.println("Node deleted");
         }
         else {
             System.out.println("Invalid index");
@@ -160,29 +159,31 @@ public class SingleLinkedList {
         count--;
     }
 
-    private void traverseCircularLinkedList(SNode head) {
-        for(SNode snode = head; snode!=null;snode=snode.next){
-            System.out.print(snode.data+"-->");
+    private void deleteData(int data) {
+        for(DNode dnode=head;dnode!=null;dnode = dnode.next){
+
         }
-        System.out.println("null");
     }
 
     private void insertData(int[] data, int index) {
         if(index>count)
             index=count;
-        SNode hold = null;
-        SNode startNode = null;
-        SNode endNode = null;
+        DNode hold = null;
+        DNode startNode = null;
+        DNode endNode = null;
         int noOfElements = 0;
         temp = head;
         for (int d : data) {
-            SNode snode = new SNode(d);
+            DNode dnode = new DNode(d);
             if (startNode == null) {
-                startNode = snode;
-                endNode = snode;
+                startNode = dnode;
+                endNode = dnode;
+                noOfElements++;
+                continue;
             }
-            endNode.next = snode;
-            endNode = snode;
+            endNode.next = dnode;
+            dnode.prev = endNode;
+            endNode = dnode;
             noOfElements++;
         }
         if (head == null && tail == null) {
@@ -191,18 +192,34 @@ public class SingleLinkedList {
             tail.next = null;
         } else if (index < 2) {
             endNode.next = head;
+            head.prev = endNode;
             head = startNode;
         } else if (index < count) {
             for (int i = 1; i < index - 1; i++) {
                 temp = temp.next;
             }
             endNode.next = temp.next;
+            temp.next.prev = endNode;
             temp.next = startNode;
         } else if (index == count) {
             tail.next = startNode;
+            startNode.prev = tail;
             tail = endNode;
             tail.next = null;
         }
         count = count + noOfElements;
     }
+    private void traverse(){
+        for(DNode dnode = head; dnode!=null; dnode = dnode.next){
+            System.out.print(dnode.data+"-->");
+        }
+        System.out.println("null");
+    }
+    private void reverseTraverse(){
+        for(DNode dnode = tail; dnode!=null; dnode = dnode.prev){
+            System.out.print(dnode.data+"-->");
+        }
+        System.out.println("null");
+    }
+
 }

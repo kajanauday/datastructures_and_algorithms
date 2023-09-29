@@ -3,6 +3,15 @@ package dsa.linkedlists;
 import java.util.Scanner;
 
 public class CircularLinkedList {
+    class CNode{
+        int data;
+        CNode next;
+        CNode prev;
+        CNode(int data){
+            this.data = data;
+            this.next = null;
+        }
+    }
     CNode head = null;
     CNode tail = null;
     CNode temp = null;
@@ -18,14 +27,15 @@ public class CircularLinkedList {
         int noOfElements;
         do{
         try{
-            System.out.print("Select transaction:\n\t" +
-                    "1 Insert\n\t" +
-                    "2 Insert|index\n\t" +
-                    "3 Traverse\n\t" +
-                    "4 Delete\n\t" +
-                    "5 Search\n\t"+
-                    "6 Delete|index\n" +
-                    "Please enter your option:");
+            System.out.print("""
+                   Select transaction:
+                    \t1 Insert
+                    \t2 Insert|index
+                    \t3 Traverse
+                    \t4 Delete
+                    \t5 Search
+                    \t6 Delete|index
+                  Please enter your option:""");
             int option = scanner.nextInt();
             switch (option) {
                 case 1 -> {
@@ -88,6 +98,7 @@ public class CircularLinkedList {
             isUserWantsToContinue =  scanner.next().equalsIgnoreCase("Y");
             System.out.println("-----------------------------------------------------------");
         }while (isUserWantsToContinue);
+        scanner.close();
     }
 
     private void deleteDataAt(int index) {
