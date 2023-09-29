@@ -1,4 +1,4 @@
-package dsa.linkedlists;
+package datastructures_and_algorithms.linkedlists;
 
 import java.util.Scanner;
 
