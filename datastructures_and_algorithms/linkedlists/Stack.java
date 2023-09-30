@@ -26,11 +26,12 @@ public class Stack {
             try{
                 System.out.println("************ STACK ************");
                 System.out.println("""
-                        \t1 append
-                        \t2 pop
-                        \t3 top
-                        \t4 check empty
-                        \t5 check full""");
+                        \t1 Append
+                        \t2 Pop
+                        \t3 Top
+                        \t4 isEmpty
+                        \t5 isFull
+                        \t6 Clear""");
                 System.out.println("************ STACK ************");
                 System.out.print("Please enter your option:");
                 int option = scanner.nextInt();
@@ -64,6 +65,13 @@ public class Stack {
                     }
                     case 5 -> {
                         System.out.println("Stack is "+(stack.count== MAX_ELEMENTS?"Full!":"not Full!"));
+                    }
+                    case 6 ->{
+                        System.out.println("-----------------------------------------------------------");
+                        stack.top = null;
+                        stack.count = 0;
+                        System.out.println("Stack is cleared!");
+                        System.out.println("-----------------------------------------------------------");
                     }
                     default -> System.out.println("---Invalid option selected---");
                 }
