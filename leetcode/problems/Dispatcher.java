@@ -8,8 +8,8 @@ public class Dispatcher {
         Scanner scanner;
         Solution solution   = new Solution();
         Toolkit toolkit = new Toolkit();
-        solution.rotateArray(toolkit.sequentialIntegerArray(16,5)); //this method will rotate array in clock wise direction by n times//
+        //System.out.println(solution.defangIPaddr("1.1.1.1"));
+        //solution.rotateArray(toolkit.sequentialIntegerArray(16,5),2); //this method will rotate array in clock wise direction by n times//
     }
-
 }
 
