@@ -1,24 +1,23 @@
 package datastructures_and_algorithms.linkedlists;
 import java.util.Scanner;
-
-public class CircularDoubleLinkedList {
-    class CDNode {
-        int data;
-        CDNode prev;
-        CDNode next;
-        public CDNode(int data){
-            this.data = data;
-            next = null;
-            prev = null;
-        }
+class CDNode {
+    int data;
+    CDNode prev;
+    CDNode next;
+    public CDNode(int data){
+        this.data = data;
+        next = null;
+        prev = null;
     }
+}
+public class CircularDoubleLinkedList {
     private int count;
     CDNode head = null;
     CDNode tail = null;
     CDNode temp = null;
 
     public static void main(String[] args){
-        CircularDoubleLinkedList CircularDoubleLinkedList = new CircularDoubleLinkedList();
+        CircularDoubleLinkedList circularDoubleLinkedList = new CircularDoubleLinkedList();
         boolean isUserWantsToContinue;
         int[] dataArray;
         int index;
@@ -50,7 +49,7 @@ public class CircularDoubleLinkedList {
                             System.out.print("Enter [" + (i + 1) + "] Element: ");
                             dataArray[i] = scanner.nextInt();
                         }
-                        CircularDoubleLinkedList.insertData(dataArray, CircularDoubleLinkedList.count);
+                        circularDoubleLinkedList.insertData(dataArray, circularDoubleLinkedList.count);
                         System.out.println("------------------------------------------------------------");
                     }
                     case 2 -> {
@@ -64,36 +63,36 @@ public class CircularDoubleLinkedList {
                         }
                         System.out.println("Enter index: ");
                         index = scanner.nextInt();
-                        CircularDoubleLinkedList.insertData(dataArray, index);
+                        circularDoubleLinkedList.insertData(dataArray, index);
                         System.out.println("------------------------------------------------------------");
                     }
                     case 3 -> {
                         System.out.println("-----------------------------------------------------------");
                         System.out.print("Enter data to delete:");
-                        System.out.println(CircularDoubleLinkedList.searchAndDelete(scanner.nextInt(),true));
+                        System.out.println(circularDoubleLinkedList.searchAndDelete(scanner.nextInt(),true));
                         System.out.println("-----------------------------------------------------------");
                     }
                     case 4 -> {
                         System.out.println("-----------------------------------------------------------");
                         System.out.print("Enter index to delete:");
-                        CircularDoubleLinkedList.deleteDataAt(scanner.nextInt());
+                        circularDoubleLinkedList.deleteDataAt(scanner.nextInt());
                         System.out.println("-----------------------------------------------------------");
                     }
                     case 5 -> {
                         System.out.println("-----------------------------------------------------------");
                         System.out.print("Enter element to search:");
-                        System.out.println(CircularDoubleLinkedList.searchAndDelete(scanner.nextInt(),false));
+                        System.out.println(circularDoubleLinkedList.searchAndDelete(scanner.nextInt(),false));
                         System.out.println("-----------------------------------------------------------");
                     }
-                    case 6 -> System.out.println("Number of Elements in list:"+CircularDoubleLinkedList.count);
+                    case 6 -> System.out.println("Number of Elements in list:"+circularDoubleLinkedList.count);
                     case 7 -> {
                         System.out.println("-----------------------------------------------------------");
-                        CircularDoubleLinkedList.traverse();
+                        circularDoubleLinkedList.traverse();
                         System.out.println("-----------------------------------------------------------");
                     }
                     case 8 -> {
                         System.out.println("-----------------------------------------------------------");
-                        CircularDoubleLinkedList.reverseTraverse();
+                        circularDoubleLinkedList.reverseTraverse();
                         System.out.println("-----------------------------------------------------------");
                     }
                     default -> System.out.println("---Invalid option selected---");

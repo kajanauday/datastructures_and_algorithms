@@ -1,17 +1,16 @@
 package datastructures_and_algorithms.linkedlists;
 
 import java.util.Scanner;
-
-public class CircularLinkedList {
-    class CNode{
-        int data;
-        CNode next;
-        CNode prev;
-        CNode(int data){
-            this.data = data;
-            this.next = null;
-        }
+class CNode{
+    int data;
+    CNode next;
+    CNode prev;
+    CNode(int data){
+        this.data = data;
+        this.next = null;
     }
+}
+public class CircularLinkedList {
     CNode head = null;
     CNode tail = null;
     CNode temp = null;

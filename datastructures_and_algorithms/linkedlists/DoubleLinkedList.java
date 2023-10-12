@@ -1,17 +1,16 @@
 package datastructures_and_algorithms.linkedlists;
 import java.util.Scanner;
-
-public class DoubleLinkedList {
-    class DNode {
-        int data;
-        DNode prev;
-        DNode next;
-        public DNode(int data){
-            this.data = data;
-            next = null;
-            prev = null;
-        }
+class DNode {
+    int data;
+    DNode prev;
+    DNode next;
+    public DNode(int data){
+        this.data = data;
+        next = null;
+        prev = null;
     }
+}
+public class DoubleLinkedList {
     private int count;
     DNode head = null;
     DNode tail = null;
