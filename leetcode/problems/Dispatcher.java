@@ -8,6 +8,8 @@ public class Dispatcher {
         Scanner scanner;
         Solution solution   = new Solution();
         Toolkit toolkit = new Toolkit();
+        System.out.println(solution.arrayStringsAreEqual(new String[]{"ab", "c"},new String[]{"a", "bc"}));
+        //System.out.println(solution.interpret("(al)G(al)()()G"));
         //System.out.println(solution.defangIPaddr("1.1.1.1"));
         //solution.rotateArray(toolkit.sequentialIntegerArray(16,5),2); //this method will rotate array in clock wise direction by n times//
     }
