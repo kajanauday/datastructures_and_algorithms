@@ -10,7 +10,7 @@ public class ComputeSum extends Combine.CombineFn<Integer, Integer, Integer> {
 
     @Override
     public Integer addInput(Integer accumulator, Integer input) {
-        return accumulator + input;
+        return accumulator + input;  // return accumulator + 1; ---> for count//
     }
 
     @Override
