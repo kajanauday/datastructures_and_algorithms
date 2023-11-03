@@ -1,15 +1,15 @@
 package datastructures_and_algorithms.linkedlists;
 import java.util.Scanner;
-
-public class SingleLinkedList {
-    class SNode{
-        int data;
-        SNode next;
-        SNode(int data){
-            this.data = data;
-            this.next = null;
-        }
+class SNode{
+    int data;
+    SNode next;
+    SNode(int data){
+        this.data = data;
+        this.next = null;
     }
+}
+public class SingleLinkedList {
+
     SNode head = null;
     SNode tail = null;
     SNode temp = null;
