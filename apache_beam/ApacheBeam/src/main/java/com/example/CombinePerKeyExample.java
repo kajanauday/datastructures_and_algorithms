@@ -3,7 +3,6 @@ package com.example;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.transforms.Create;
 import org.apache.beam.sdk.transforms.GroupByKey;
-import org.apache.beam.sdk.transforms.ParDo;
 import org.apache.beam.sdk.values.KV;
 
 public class CombinePerKeyExample {
