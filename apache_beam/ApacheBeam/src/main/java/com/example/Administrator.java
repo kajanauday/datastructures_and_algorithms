@@ -10,7 +10,8 @@ public class Administrator {
         //new CountExmple().executePerKey(pipeline);
         //new DistinctExample().distinctWords(pipeline);
         //new DistinctExample().distinctIntegers(pipeline);
-        new LatestExample().execute(pipeline);
+        //new LatestExample().execute(pipeline);
+        //new MaxExample().execute(pipeline);
         pipeline.run().waitUntilFinish();
     }
 }

@@ -26,7 +26,7 @@ public class LatestExample {
         // Get the latest element from collection with timestamps. Should always be 5
         PCollection<Integer> latestTimestamped = withTimestamps.apply(Latest.globally());
         // [END main_section]
-        latest.apply(ParDo.of(new PrintIntegerElement()));
-        latestTimestamped.apply( ParDo.of(new PrintIntegerElement()));
+        latest.apply(ParDo.of(new PrintElement<Integer>()));
+        latestTimestamped.apply( ParDo.of(new PrintElement<Integer>()));
     }
 }
