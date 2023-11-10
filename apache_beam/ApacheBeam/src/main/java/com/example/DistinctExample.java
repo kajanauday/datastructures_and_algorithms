@@ -16,12 +16,12 @@ public class DistinctExample {
 
         pipeline.apply(Create.of(WORDS)).setCoder(StringUtf8Coder.of())
                 .apply(Distinct.create())
-                .apply("Distinct words :", ParDo.of(new PrintStringElement()));
+                .apply("Distinct words :", ParDo.of(new PrintElement<String>()));
     }
 
     public void distinctIntegers(Pipeline pipeline) {
         pipeline.apply(Create.of(1, 1, 2, 2, 3, 4, 4, 5, 5))
                 .apply(Distinct.create())
-                .apply("Printing...", ParDo.of(new PrintIntegerElement()));
+                .apply("Printing...", ParDo.of(new PrintElement<Integer>()));
     }
 }

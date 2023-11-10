@@ -10,6 +10,9 @@ public class MapExample {
         pipeline.apply("Reading File : ", TextIO.read().from(filePath))
                 .apply("Convering to String :", MapElements.via(new ConvertToInteger()))
                 .apply("Sqaring :", MapElements.via(new SqaureElement()))
-                .apply("printing :", ParDo.of(new PrintIntegerElement()));
+                .apply("printing :", ParDo.of(new PrintElement<Integer>()));
+    }
+
+    public void execute(Pipeline pipeline) {
     }
 }

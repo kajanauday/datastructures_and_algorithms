@@ -11,7 +11,7 @@ public class CombinersExample {
         pipeline.apply(TextIO.read().from(filePath))
                 .apply("Converting to Integer :", MapElements.via(new ConvertToInteger()))
                 .apply("Calculate sum :", Combine.globally(new ComputeSum()))
-                .apply("Printing Element :", ParDo.of(new PrintIntegerElement()));
+                .apply("Printing Element :", ParDo.of(new PrintElement<Integer>()));
     }
 
 }
