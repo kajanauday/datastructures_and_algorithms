@@ -12,6 +12,10 @@ public class Administrator {
         //new DistinctExample().distinctIntegers(pipeline);
         //new LatestExample().execute(pipeline);
         //new MaxExample().execute(pipeline);
+        //new MeanExample().execute(pipeline);
+        //new MinExample().execute(pipeline);
+        //new SumExample().execute(pipeline);
+        //new TopExample().execute(pipeline);
         pipeline.run().waitUntilFinish();
     }
 }
