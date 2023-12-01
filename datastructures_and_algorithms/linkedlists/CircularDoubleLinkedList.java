@@ -1,30 +1,34 @@
 package datastructures_and_algorithms.linkedlists;
+
 import java.util.Scanner;
+
 class CDNode {
     int data;
     CDNode prev;
     CDNode next;
-    public CDNode(int data){
+
+    public CDNode(int data) {
         this.data = data;
         next = null;
         prev = null;
     }
 }
+
 public class CircularDoubleLinkedList {
-    private int count;
     CDNode head = null;
     CDNode tail = null;
     CDNode temp = null;
+    private int count;
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         CircularDoubleLinkedList circularDoubleLinkedList = new CircularDoubleLinkedList();
         boolean isUserWantsToContinue;
         int[] dataArray;
         int index;
         Scanner scanner = new Scanner(System.in);
         int noOfElements;
-        do{
-            try{
+        do {
+            try {
                 System.out.println("****************************** CIRCULAR DOUBLY LINKED LIST ******************************");
                 System.out.print("""
                         Select transaction:
@@ -69,7 +73,7 @@ public class CircularDoubleLinkedList {
                     case 3 -> {
                         System.out.println("-----------------------------------------------------------");
                         System.out.print("Enter data to delete:");
-                        System.out.println(circularDoubleLinkedList.searchAndDelete(scanner.nextInt(),true));
+                        System.out.println(circularDoubleLinkedList.searchAndDelete(scanner.nextInt(), true));
                         System.out.println("-----------------------------------------------------------");
                     }
                     case 4 -> {
@@ -81,10 +85,10 @@ public class CircularDoubleLinkedList {
                     case 5 -> {
                         System.out.println("-----------------------------------------------------------");
                         System.out.print("Enter element to search:");
-                        System.out.println(circularDoubleLinkedList.searchAndDelete(scanner.nextInt(),false));
+                        System.out.println(circularDoubleLinkedList.searchAndDelete(scanner.nextInt(), false));
                         System.out.println("-----------------------------------------------------------");
                     }
-                    case 6 -> System.out.println("Number of Elements in list:"+circularDoubleLinkedList.count);
+                    case 6 -> System.out.println("Number of Elements in list:" + circularDoubleLinkedList.count);
                     case 7 -> {
                         System.out.println("-----------------------------------------------------------");
                         circularDoubleLinkedList.traverse();
@@ -97,43 +101,43 @@ public class CircularDoubleLinkedList {
                     }
                     default -> System.out.println("---Invalid option selected---");
                 }
-            } catch(Exception e){
+            } catch (Exception e) {
                 System.out.println("invalid transaction...  press any key to continue");
                 scanner.next();
             }
             System.out.print("do you want to continue[y/n]:");
-            isUserWantsToContinue =  scanner.next().equalsIgnoreCase("Y");
+            isUserWantsToContinue = scanner.next().equalsIgnoreCase("Y");
             System.out.println("-----------------------------------------------------------");
-        }while (isUserWantsToContinue);
+        } while (isUserWantsToContinue);
     }
 
     private String searchAndDelete(int data, boolean deleteRequired) {
-            CDNode cdnode = head;
-            do{
-                if (cdnode.data == data) {
-                    if (deleteRequired) {
-                        if (cdnode == head) {
-                            head = head.next;
-                            head.prev = tail;
-                            tail.next = head;
-                        } else if (cdnode == tail) {
-                            tail = tail.prev;
-                            tail.next = head;
-                            head.prev = tail;
-                        } else {
-                            if (cdnode.prev != null) {
-                                cdnode.prev.next = cdnode.next;
-                            }
-                            if (cdnode.next != null) {
-                                cdnode.next.prev = cdnode.prev;
-                            }
+        CDNode cdnode = head;
+        do {
+            if (cdnode.data == data) {
+                if (deleteRequired) {
+                    if (cdnode == head) {
+                        head = head.next;
+                        head.prev = tail;
+                        tail.next = head;
+                    } else if (cdnode == tail) {
+                        tail = tail.prev;
+                        tail.next = head;
+                        head.prev = tail;
+                    } else {
+                        if (cdnode.prev != null) {
+                            cdnode.prev.next = cdnode.next;
                         }
-                        count--;
-                        return "Delete Done!!";
+                        if (cdnode.next != null) {
+                            cdnode.next.prev = cdnode.prev;
+                        }
                     }
-                    return "Data Found!!";
+                    count--;
+                    return "Delete Done!!";
                 }
-            }while(temp!=head);
+                return "Data Found!!";
+            }
+        } while (temp != head);
         return "Data not Found!!";
     }
 
@@ -147,13 +151,12 @@ public class CircularDoubleLinkedList {
             for (int i = 1; i < index; i++) {
                 temp = temp.next;
             }
-            if(temp.next!=null)
-                temp.next.prev= temp.prev;
-            if(temp.prev!=null)
+            if (temp.next != null)
+                temp.next.prev = temp.prev;
+            if (temp.prev != null)
                 temp.prev.next = temp.next;
             System.out.println("Node deleted");
-        }
-        else {
+        } else {
             System.out.println("Invalid index");
             return;
         }
@@ -161,8 +164,8 @@ public class CircularDoubleLinkedList {
     }
 
     private void insertData(int[] data, int index) {
-        if(index>count)
-            index=count;
+        if (index > count)
+            index = count;
         CDNode hold = null;
         CDNode startNode = null;
         CDNode endNode = null;
@@ -188,7 +191,7 @@ public class CircularDoubleLinkedList {
             head.prev = tail;
         } else if (index < 2) {
             endNode.next = head;
-            head.prev =tail= endNode;
+            head.prev = tail = endNode;
             head = startNode;
         } else if (index < count) {
             for (int i = 1; i < index - 1; i++) {
@@ -209,12 +212,12 @@ public class CircularDoubleLinkedList {
         count = count + noOfElements;
     }
 
-    private void traverse(){
+    private void traverse() {
         temp = head;
-        do{
-            System.out.print(temp.data+"-->");
+        do {
+            System.out.print(temp.data + "-->");
             temp = temp.next;
-        }while(temp!=head);
+        } while (temp != head);
         System.out.println("[end]");
     }
 

@@ -1,13 +1,17 @@
 package datastructures_and_algorithms.linkedlists;
+
 import java.util.Scanner;
-class SNode{
+
+class SNode {
     int data;
     SNode next;
-    SNode(int data){
+
+    SNode(int data) {
         this.data = data;
         this.next = null;
     }
 }
+
 public class SingleLinkedList {
 
     SNode head = null;
@@ -22,8 +26,8 @@ public class SingleLinkedList {
         int index;
         Scanner scanner = new Scanner(System.in);
         int noOfElements;
-        do{
-            try{
+        do {
+            try {
                 System.out.println("****************************** SINGLY LINKED LIST ******************************");
                 System.out.print("""
                         Select transaction:
@@ -81,7 +85,7 @@ public class SingleLinkedList {
                         System.out.println(singleLinkedList.searchData(scanner.nextInt()));
                         System.out.println("-----------------------------------------------------------");
                     }
-                    case 6 -> System.out.println("Number of Elements in list:"+singleLinkedList.count);
+                    case 6 -> System.out.println("Number of Elements in list:" + singleLinkedList.count);
                     case 7 -> {
                         System.out.println("-----------------------------------------------------------");
                         singleLinkedList.traverseCircularLinkedList(singleLinkedList.head);
@@ -89,28 +93,26 @@ public class SingleLinkedList {
                     }
                     default -> System.out.println("---Invalid option selected---");
                 }
-            } catch(Exception e){
+            } catch (Exception e) {
                 System.out.println("invalid transaction...  press any key to continue");
                 scanner.next();
             }
             System.out.print("do you want to continue[y/n]:");
-            isUserWantsToContinue =  scanner.next().equalsIgnoreCase("Y");
+            isUserWantsToContinue = scanner.next().equalsIgnoreCase("Y");
             System.out.println("-----------------------------------------------------------");
-        }while (isUserWantsToContinue);
+        } while (isUserWantsToContinue);
         scanner.close();
     }
 
     private void deleteData(int data) {
         boolean nodeFound = false;
-        if(head!=null && head.data == data){
-            if(head.next==null)
-                head=tail=null;
-            else head=head.next;
+        if (head != null && head.data == data) {
+            if (head.next == null) head = tail = null;
+            else head = head.next;
             nodeFound = true;
-        }
-        else {
+        } else {
             SNode snode = head;
-            while (snode!= null) {
+            while (snode != null) {
                 if (snode.next.data == data) {
                     if (snode.next == tail) {
                         tail = snode;
@@ -131,8 +133,8 @@ public class SingleLinkedList {
     }
 
     private boolean searchData(int data) {
-        for(SNode snode = head;snode!=null;snode = snode.next){
-            if(snode.data==data){
+        for (SNode snode = head; snode != null; snode = snode.next) {
+            if (snode.data == data) {
                 return true;
             }
         }
@@ -152,8 +154,7 @@ public class SingleLinkedList {
             } else {
                 temp.next = null;
             }
-        }
-        else {
+        } else {
             System.out.println("Invalid index");
             return;
         }
@@ -161,15 +162,14 @@ public class SingleLinkedList {
     }
 
     private void traverseCircularLinkedList(SNode head) {
-        for(SNode snode = head; snode!=null;snode=snode.next){
-            System.out.print(snode.data+"-->");
+        for (SNode snode = head; snode != null; snode = snode.next) {
+            System.out.print(snode.data + "-->");
         }
         System.out.println("null");
     }
 
     private void insertData(int[] data, int index) {
-        if(index>count)
-            index=count;
+        if (index > count) index = count;
         SNode hold = null;
         SNode startNode = null;
         SNode endNode = null;

@@ -7,15 +7,16 @@ public class Queue {
     SNode front = null;
     SNode back = null;
     SNode temp = null;
-    public static void main(String[] args){
+
+    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Queue queue = new Queue();
         final int MAX_ELEMENTS = 100;
         boolean isUserWantsToContinue;
         int noOfElements = 0;
         int[] dataArray;
-        do{
-            try{
+        do {
+            try {
                 System.out.println("************ STACK ************");
                 System.out.println("""
                         \t1 Enqueue
@@ -42,23 +43,23 @@ public class Queue {
                     }
                     case 2 -> {
                         System.out.println("-----------------------------------------------------------");
-                        System.out.println("Popped "+queue.Dequeue());
+                        System.out.println("Popped " + queue.Dequeue());
                         System.out.println("-----------------------------------------------------------");
                     }
                     case 3 -> {
                         System.out.println("-----------------------------------------------------------");
-                        System.out.println("top element is "+ queue.front.data);
+                        System.out.println("top element is " + queue.front.data);
                         System.out.println("-----------------------------------------------------------");
                     }
                     case 4 -> {
                         System.out.println("-----------------------------------------------------------");
-                        System.out.println("Stack is"+(queue.count==0?" Empty!":" not Empty!"));
+                        System.out.println("Stack is" + (queue.count == 0 ? " Empty!" : " not Empty!"));
                         System.out.println("-----------------------------------------------------------");
                     }
                     case 5 -> {
-                        System.out.println("Stack is "+(queue.count== MAX_ELEMENTS?"Full!":"not Full!"));
+                        System.out.println("Stack is " + (queue.count == MAX_ELEMENTS ? "Full!" : "not Full!"));
                     }
-                    case 6 ->{
+                    case 6 -> {
                         System.out.println("-----------------------------------------------------------");
                         queue.front = null;
                         queue.count = 0;
@@ -67,31 +68,32 @@ public class Queue {
                     }
                     default -> System.out.println("---Invalid option selected---");
                 }
-            } catch(Exception e){
+            } catch (Exception e) {
                 System.out.println("something went wrong...  press any key to continue");
                 e.printStackTrace();
                 scanner.next();
             }
             System.out.print("do you want to continue[y/n]:");
-            isUserWantsToContinue =  scanner.next().equalsIgnoreCase("Y");
+            isUserWantsToContinue = scanner.next().equalsIgnoreCase("Y");
             System.out.println("-----------------------------------------------------------");
-        }while (isUserWantsToContinue);
+        } while (isUserWantsToContinue);
     }
+
     private void Enqueue(int[] dataArray) {
-        for(int i : dataArray){
+        for (int i : dataArray) {
             temp = new SNode(i);
-            if(front==null){
+            if (front == null) {
                 front = back = temp;
-            }
-            else {
+            } else {
                 back.next = temp;
                 back = temp;
             }
             count++;
         }
     }
-    private int Dequeue(){
-        if(front == null){
+
+    private int Dequeue() {
+        if (front == null) {
             return -101;
         }
         count--;
