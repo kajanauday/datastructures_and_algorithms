@@ -1,12 +1,14 @@
 package datastructures_and_algorithms.linkedlists;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
 
 class BinaryNode {
     BinaryNode left;
     BinaryNode right;
     int data;
-    int height;
+    //int height;
 
     public BinaryNode(int data) {
         this.data = data;
@@ -18,122 +20,308 @@ class BinaryNode {
 }
 
 public class BinarySearchTree {
-    BinaryNode root = null;
+    final private static int LEAF_NODE = 1;
+    final private static int ROOT_NODE = 2;
+    final private static int LEFT_NODE = 3;
+    final private static int RIGHT_NODE = 4;
+    Queue<BinaryNode> q = new LinkedList<>();
+    Queue<String> spaces = new LinkedList<>();
+    int heightOfTheTree = 0;
+    private BinaryNode root = null;
 
     public static void main(String[] args) {
         BinarySearchTree binarySearchTree = new BinarySearchTree();
         Scanner scanner = new Scanner(System.in);
         boolean isUserWantsToContinue;
-        int noOfElements = 0;
+        int noOfElements;
         int[] dataArray;
         do {
             try {
-                System.out.println("************ BST ************");
-                System.out.println("""
-                        \t1 Insert
-                        \t2 Search
-                        \t3 Traverse(inorder)
-                        \t4 Traverse(preorder)
-                        \t5 Traverse(postorder)
-                        \t4 Clear""");
-                System.out.println("************ BST ************");
+                binarySearchTree.printMenu();
                 System.out.print("Please enter your option:");
                 int option = scanner.nextInt();
                 switch (option) {
                     case 1 -> {
                         System.out.println("-----------------------------------------------------------");
                         System.out.print("enter number or elements to insert: ");
-                        noOfElements = scanner.nextInt();
-                        dataArray = new int[noOfElements];
+                        noOfElements = 8;//scanner.nextInt();
+                        int[] data = {4, 2, 3, 1, 6, 5, 7, 8};
                         for (int i = 0; i < noOfElements; i++) {
-                            System.out.print("Enter [" + (i + 1) + "] Element: ");
-                            dataArray[i] = scanner.nextInt();
-                        }
-                        if(binarySearchTree.root==null)
-                            binarySearchTree.root = new BinaryNode(dataArray[0]);
-                        for (int i=0; i<dataArray.length;i++) {
-                            binarySearchTree.insert(binarySearchTree.root, dataArray[i]);
+                            //System.out.print("Enter [" + (i + 1) + "] Element: ");
+                            if (binarySearchTree.root == null) {
+                                binarySearchTree.root = new BinaryNode(data[i]);//scanner.nextInt());
+                                binarySearchTree.heightOfTheTree = 0;
+                            } else binarySearchTree.insert(data[i]);//scanner.nextInt());
                         }
                         System.out.println("------------------------------------------------------------");
                     }
                     case 2 -> {
                         System.out.println("-----------------------------------------------------------");
-                        System.out.println("Search");
+                        System.out.print("Enter Value to search:");
+                        System.out.println(binarySearchTree.searchElement(scanner.nextInt()));
                         System.out.println("-----------------------------------------------------------");
                     }
-                    case 3,4,5 -> {
-                        System.out.println("-----------------------------------------------------------");
-                        if(option==4) {
-                            System.out.println("inorder --> ");
-                            binarySearchTree.inOrderTraversal(binarySearchTree.root);
-                        }
-                        else if(option == 5){
-                            System.out.println("preorder --> ");
-                            binarySearchTree.preOrderTraversal(binarySearchTree.root);
-                        } else{
-                            System.out.println("postorder 9++sszz --> ");
-                            binarySearchTree.postOrderTraversal(binarySearchTree.root);
-                        }
-                        System.out.println("-----------------------------------------------------------");
+                    case 3 -> {
+                        binarySearchTree.getRootNode();
+                    }
+                    case 4 -> {
+                        System.out.println("-".repeat(30) + "< inorder >" + "-".repeat(30));
+                        binarySearchTree.inOrderTraversal(binarySearchTree.root);
+                        System.out.println("-".repeat(60));
+
+                    }
+                    case 5 -> {
+                        System.out.println("-".repeat(30) + "< preorder >" + "-".repeat(30));
+                        binarySearchTree.preOrderTraversal(binarySearchTree.root);
+                        System.out.println("-".repeat(60));
                     }
                     case 6 -> {
-                        System.out.println("-----------------------------------------------------------");
-                        System.out.println(binarySearchTree.root.data + " " + binarySearchTree.root.right.data + " " + binarySearchTree.root.right.right.data);
-                        System.out.println("-----------------------------------------------------------");
+                        System.out.println("-".repeat(30) + "< post-order >" + "-".repeat(30));
+                        binarySearchTree.postOrderTraversal(binarySearchTree.root);
+                        System.out.println("-".repeat(60));
                     }
                     case 7 -> {
-                        System.out.println("Stack is ");
+                        System.out.println("-".repeat(30) + "< levelorder >" + "-".repeat(30));
+                        binarySearchTree.levelOrderTraversal(binarySearchTree.root);
+                        System.out.println("-".repeat(60));
                     }
                     case 8 -> {
-                        System.out.println("-----------------------------------------------------------");
-                        System.out.println("Stack is cleared!");
-                        System.out.println("-----------------------------------------------------------");
+                        System.out.println("-".repeat(30) + "< Height of the tree >" + "-".repeat(30));
+                        System.out.println(binarySearchTree.getHeightOfTheTree());
+                        System.out.println("-".repeat(60));
                     }
-                    default -> System.out.println("---Invalid option selected---");
+                    case 9 -> {
+                        System.out.println("-".repeat(30) + "< delete element >" + "-".repeat(30));
+                        System.out.print("Enter element to delete:");
+                        int data = scanner.nextInt();
+                        binarySearchTree.delete(data);
+                        System.out.println("-".repeat(60));
+                    }
+                    default -> printErrorMessage("---Invalid option selected---");
                 }
             } catch (Exception e) {
-                System.out.println("something went wrong...  press any key to continue");
-                e.printStackTrace();
+                printErrorMessage("[ERROR]" + e.getMessage());
                 scanner.next();
             }
-            System.out.print("do you want to continue[y/n]:");
-            isUserWantsToContinue = scanner.next().equalsIgnoreCase("Y");
+            //System.out.print("do you want to continue[y/n]:");
+            //isUserWantsToContinue = scanner.next().equalsIgnoreCase("Y");
             System.out.println("-----------------------------------------------------------");
-        } while (isUserWantsToContinue);
+        } while (true);
 
     }
 
+    private static void printErrorMessage(String s) {
+        System.out.println("\u001B[31m" + s + "\u001B[0m");
+    }
 
-    private void insert(BinaryNode bn, int data) {
-        if (bn.data > data) {
-            if (bn.left != null) insert(bn.left, data);
-            else bn.left = new BinaryNode(data);
-        } else if (bn.right != null)
-            insert(bn.right, data);
-        else bn.right = new BinaryNode(data);
+    private void delete(int data) {
+        if (root == null) {
+            System.out.println("BST is Empty");
+        } else if (root.data == data) {
+            if (root.left != null && root.left.data == data) deleteNode(root, root.left.data);
+            else if (root.left == null && root.right == null) {
+                root = null;
+                heightOfTheTree = 0;
+            } else root.data = deleteRootNode(root);
+        } else {
+            BinaryNode node = root, parent = root;
+            while (true) {
+                if (node.data == data) {
+                    System.out.println("Parent:" + parent.data + " Data:" + node.data);
+                    deleteNode(parent, data);
+                    break;
+                } else if (data < node.data) {
+                    if (node.left != null) {
+                        parent = node;
+                        node = node.left;
+                    } else {
+                        printErrorMessage("Node not found");
+                        break;
+                    }
+                } else {
+                    if (node.right != null) {
+                        parent = node;
+                        node = node.right;
+                    } else {
+                        printErrorMessage("Node not found");
+                        break;
+                    }
+                }
+            }
+        }
+    }
 
+    private void deleteNode(BinaryNode parent, int data) {
+        BinaryNode node = (parent.left != null && parent.left.data == data) ? parent.left : parent.right;
+        switch (getTypeOfNode(node)) {
+            case BinarySearchTree.LEAF_NODE -> {
+                System.out.println("deleting leaf-node");
+                if (parent.data >= data) parent.left = null;
+                else parent.right = null;
+            }
+            case BinarySearchTree.LEFT_NODE -> {
+                System.out.println("deleting left-sub-tree-node");
+                if (parent.left.left != null) parent.left = parent.left.left;
+                else parent.left = parent.left.right;
+            }
+            case BinarySearchTree.RIGHT_NODE -> {
+                System.out.println("deleting right-sub-tree-node");
+                if (parent.right.left != null) parent.right = parent.right.left;
+                else parent.right = parent.right.right;
+            }
+            case BinarySearchTree.ROOT_NODE -> {
+                System.out.println("deleting root-node");
+                node.data = deleteRootNode(node);
+
+            }
+            default -> System.out.println("Invalid node type...");
+        }
+    }
+
+    private int deleteRootNode(BinaryNode node) {
+        BinaryNode parent = node.right;
+        BinaryNode bn = node.right;
+        int retData = bn.data;
+        while (bn.left != null) {
+            parent = bn;
+            bn = bn.left;
+        }
+        if (parent == bn) {
+            deleteNode(node, node.right.data);
+        } else {
+            retData = parent.left.data;
+            deleteNode(parent, parent.left.data);
+        }
+        return retData;
+    }
+
+    private void printMenu() {
+        System.out.println("\u001B[34m" + """
+                ************ BST ************
+                1 Insert
+                2 Search
+                3 Print Root
+                4 Traverse (inorder)
+                5 Traverse (preorder)
+                6 Traverse (postorder)
+                7 Traversal (levelorder)
+                8 Find Height
+                9 Remove Element
+                ************ BST ************""" + "\u001B[0m");
+    }
+
+    private int getTypeOfNode(BinaryNode node) {
+        if (node.left != null && node.right != null) return ROOT_NODE;
+        else if (node.left == null && node.right == null) return LEAF_NODE;
+        else if (node.left != null) return LEFT_NODE;
+        else return RIGHT_NODE;
+    }
+
+    private String searchElement(int data) {
+        BinaryNode tmp = root;
+        int level = 0;
+        while (tmp != null) {
+            level++;
+            if (data < tmp.data) tmp = tmp.left;
+            else if (data > tmp.data) tmp = tmp.right;
+            else break;
+        }
+        return tmp != null ? "Element " + data + " found at level " + level : "Element " + data + " Not found!";
+    }
+
+    private void insert(int data) {
+        BinaryNode node = root;
+        int height = 1;
+        while (true) {
+            if (data <= node.data) {
+                if (node.left != null) node = node.left;
+                else {
+                    node.left = new BinaryNode(data);
+                    break;
+                }
+                height++;
+            } else {
+                if (node.right != null) node = node.right;
+                else {
+                    node.right = new BinaryNode(data);
+                    break;
+                }
+                height++;
+            }
+        }
+        heightOfTheTree = Math.max(heightOfTheTree, height);
+    }
+
+    private void getRootNode() {
+        System.out.println((root != null) ? "Value of root is " + root.data : "root is null / empty BST");
+    }
+
+    private int getHeightOfTheTree() {
+        return heightOfTheTree;
+    }
+
+    private void preOrderTraversal(BinaryNode bn) {
+        System.out.println(bn.data);
+        if (bn.left != null) preOrderTraversal(bn.left);
+        if (bn.right != null) preOrderTraversal(bn.right);
     }
 
     private void inOrderTraversal(BinaryNode bn) {
-        if (bn.left != null)
-            inOrderTraversal(bn.left);
+        if (bn == null) return;
+        inOrderTraversal(bn.left);
         System.out.println(bn.data);
-        if (bn.right != null)
-            inOrderTraversal(bn.right);
-    }
-    private void preOrderTraversal(BinaryNode bn) {
-        System.out.println(bn.data);
-        if (bn.left != null)
-            preOrderTraversal(bn.left);
-        if (bn.right != null)
-            preOrderTraversal(bn.right);
+        inOrderTraversal(bn.right);
     }
 
     private void postOrderTraversal(BinaryNode bn) {
-        if (bn.left != null)
-            postOrderTraversal(bn.left);
-        if (bn.right != null)
-            postOrderTraversal(bn.right);
+        if (bn.left != null) postOrderTraversal(bn.left);
+        if (bn.right != null) postOrderTraversal(bn.right);
         System.out.println(bn.data);
+    }
+
+    private void levelOrderTraversal1(BinaryNode bn) {
+        if (bn == null) return;
+        q.add(bn);
+        int levelSize = q.size();
+        while (!q.isEmpty()) {
+            for (int i = 0; i < levelSize; i++) {
+                BinaryNode node = q.remove();
+                if (node != null) {
+                    System.out.print(node.data + ",");
+                    if (node.left != null) {
+                        q.add(node.left);
+                        spaces.add(" ".repeat(3 - String.valueOf(Math.abs(node.left.data)).length()));
+                    } else {
+                        spaces.add(" ".repeat(3));
+                    }
+                    if (node.right != null) {
+                        q.add(node.right);
+                        spaces.add(" ".repeat(3 - String.valueOf(Math.abs(node.right.data)).length()));
+                    } else {
+                        spaces.add(" ".repeat(3));
+                    }
+                }
+            }
+            System.out.println();
+            levelSize = q.size();
+        }
+    }
+
+    private void levelOrderTraversal(BinaryNode bn) {
+        if (bn == null) return;
+        q.add(bn);
+        int levelSize = q.size();
+        while (!q.isEmpty()) {
+            for (int i = 0; i < levelSize; i++) {
+                BinaryNode node = q.remove();
+                if (node != null) {
+                    System.out.print(node.data + ",");
+                    if (node.left != null) q.add(node.left);
+                    if (node.right != null) q.add(node.right);
+                }
+            }
+            System.out.println();
+            levelSize = q.size();
+        }
     }
 }
