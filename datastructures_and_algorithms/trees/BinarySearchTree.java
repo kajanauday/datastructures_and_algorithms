@@ -1,4 +1,4 @@
-package datastructures_and_algorithms.linkedlists;
+package datastructures_and_algorithms.trees;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -25,16 +25,13 @@ public class BinarySearchTree {
     final private static int LEFT_NODE = 3;
     final private static int RIGHT_NODE = 4;
     Queue<BinaryNode> q = new LinkedList<>();
-    Queue<String> spaces = new LinkedList<>();
     int heightOfTheTree = 0;
     private BinaryNode root = null;
 
     public static void main(String[] args) {
         BinarySearchTree binarySearchTree = new BinarySearchTree();
         Scanner scanner = new Scanner(System.in);
-        boolean isUserWantsToContinue;
         int noOfElements;
-        int[] dataArray;
         do {
             try {
                 binarySearchTree.printMenu();
@@ -44,14 +41,13 @@ public class BinarySearchTree {
                     case 1 -> {
                         System.out.println("-----------------------------------------------------------");
                         System.out.print("enter number or elements to insert: ");
-                        noOfElements = 8;//scanner.nextInt();
-                        int[] data = {4, 2, 3, 1, 6, 5, 7, 8};
+                        noOfElements = scanner.nextInt();
                         for (int i = 0; i < noOfElements; i++) {
-                            //System.out.print("Enter [" + (i + 1) + "] Element: ");
+                            System.out.print("Enter [" + (i + 1) + "] Element: ");
                             if (binarySearchTree.root == null) {
-                                binarySearchTree.root = new BinaryNode(data[i]);//scanner.nextInt());
+                                binarySearchTree.root = new BinaryNode(scanner.nextInt());
                                 binarySearchTree.heightOfTheTree = 0;
-                            } else binarySearchTree.insert(data[i]);//scanner.nextInt());
+                            } else binarySearchTree.insert(scanner.nextInt());
                         }
                         System.out.println("------------------------------------------------------------");
                     }
@@ -61,9 +57,7 @@ public class BinarySearchTree {
                         System.out.println(binarySearchTree.searchElement(scanner.nextInt()));
                         System.out.println("-----------------------------------------------------------");
                     }
-                    case 3 -> {
-                        binarySearchTree.getRootNode();
-                    }
+                    case 3 -> binarySearchTree.getRootNode();
                     case 4 -> {
                         System.out.println("-".repeat(30) + "< inorder >" + "-".repeat(30));
                         binarySearchTree.inOrderTraversal(binarySearchTree.root);
@@ -97,14 +91,13 @@ public class BinarySearchTree {
                         binarySearchTree.delete(data);
                         System.out.println("-".repeat(60));
                     }
+                    case 10 -> System.exit(0);
                     default -> printErrorMessage("---Invalid option selected---");
                 }
             } catch (Exception e) {
                 printErrorMessage("[ERROR]" + e.getMessage());
                 scanner.next();
             }
-            //System.out.print("do you want to continue[y/n]:");
-            //isUserWantsToContinue = scanner.next().equalsIgnoreCase("Y");
             System.out.println("-----------------------------------------------------------");
         } while (true);
 
@@ -207,6 +200,7 @@ public class BinarySearchTree {
                 7 Traversal (levelorder)
                 8 Find Height
                 9 Remove Element
+                10 Exit
                 ************ BST ************""" + "\u001B[0m");
     }
 
@@ -239,15 +233,14 @@ public class BinarySearchTree {
                     node.left = new BinaryNode(data);
                     break;
                 }
-                height++;
             } else {
                 if (node.right != null) node = node.right;
                 else {
                     node.right = new BinaryNode(data);
                     break;
                 }
-                height++;
             }
+            height++;
         }
         heightOfTheTree = Math.max(heightOfTheTree, height);
     }
@@ -277,34 +270,6 @@ public class BinarySearchTree {
         if (bn.left != null) postOrderTraversal(bn.left);
         if (bn.right != null) postOrderTraversal(bn.right);
         System.out.println(bn.data);
-    }
-
-    private void levelOrderTraversal1(BinaryNode bn) {
-        if (bn == null) return;
-        q.add(bn);
-        int levelSize = q.size();
-        while (!q.isEmpty()) {
-            for (int i = 0; i < levelSize; i++) {
-                BinaryNode node = q.remove();
-                if (node != null) {
-                    System.out.print(node.data + ",");
-                    if (node.left != null) {
-                        q.add(node.left);
-                        spaces.add(" ".repeat(3 - String.valueOf(Math.abs(node.left.data)).length()));
-                    } else {
-                        spaces.add(" ".repeat(3));
-                    }
-                    if (node.right != null) {
-                        q.add(node.right);
-                        spaces.add(" ".repeat(3 - String.valueOf(Math.abs(node.right.data)).length()));
-                    } else {
-                        spaces.add(" ".repeat(3));
-                    }
-                }
-            }
-            System.out.println();
-            levelSize = q.size();
-        }
     }
 
     private void levelOrderTraversal(BinaryNode bn) {
