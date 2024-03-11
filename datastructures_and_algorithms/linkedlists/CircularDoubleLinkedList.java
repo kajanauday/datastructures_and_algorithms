@@ -151,9 +151,9 @@ public class CircularDoubleLinkedList {
             for (int i = 1; i < index; i++) {
                 temp = temp.next;
             }
-            if (temp.next != null)
+            if (temp!=null && temp.next != null)
                 temp.next.prev = temp.prev;
-            if (temp.prev != null)
+            if (temp!=null && temp.prev != null)
                 temp.prev.next = temp.next;
             System.out.println("Node deleted");
         } else {
