@@ -9,21 +9,22 @@ import java.util.Scanner;
 
 public class AVLTree {
     private static BinaryNode root;
+    PrintUtils printUtils = new PrintUtils();
     Queue<BinaryNode> q = new LinkedList<>();
 
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
         AVLTree avlTree = new AVLTree();
         PrintUtils printUtils = new PrintUtils();
-        Scanner scanner = new Scanner(System.in);
         int noOfElements;
         do {
             try {
-                avlTree.printMenu();
+                printUtils.userGuidingMessage();
                 System.out.print("Please enter your option:");
                 int option = scanner.nextInt();
                 switch (option) {
                     case 1 -> {
-                        System.out.println("-----------------------------------------------------------");
+                        System.out.println("-".repeat(30) + "< INSERTION >" + "-".repeat(30));
                         System.out.print("enter number or elements to insert: ");
                         noOfElements = scanner.nextInt();
                         for (int i = 0; i < noOfElements; i++) {
@@ -33,59 +34,52 @@ public class AVLTree {
                             } else avlTree.insert(scanner.nextInt());
                         }
                         avlTree.levelOrderTraversal(root);
-                        System.out.println("------------------------------------------------------------");
                     }
                     case 2 -> {
-                        System.out.println("-----------------------------------------------------------");
+                        System.out.println("-".repeat(30) + "< SEARCH >" + "-".repeat(30));
                         System.out.print("Enter Value to search:");
                         System.out.println(avlTree.searchElement(scanner.nextInt()));
-                        System.out.println("-----------------------------------------------------------");
                     }
-                    case 3 ->
-                            System.out.println((root != null) ? "Value of root is " + root.data : "root is null / empty BST");
+                    case 3 -> {
+                        System.out.println("-".repeat(30) + "< ROOT OF THE AVL >" + "-".repeat(30));
+                        System.out.println((root != null) ? "Value of root is " + root.data : "root is null / empty AVL tree");
+                    }
                     case 4 -> {
-                        System.out.println("-".repeat(30) + "< inorder >" + "-".repeat(30));
+                        System.out.println("-".repeat(30) + "< IN-ORDER TRAVERSAL >" + "-".repeat(30));
                         avlTree.inOrderTraversal(root);
-                        System.out.println("-".repeat(60));
-
                     }
                     case 5 -> {
-                        System.out.println("-".repeat(30) + "< preorder >" + "-".repeat(30));
+                        System.out.println("-".repeat(30) + "< PRE-ORDER TRAVERSAL >" + "-".repeat(30));
                         avlTree.preOrderTraversal(root);
-                        System.out.println("-".repeat(60));
                     }
                     case 6 -> {
-                        System.out.println("-".repeat(30) + "< levelorder >" + "-".repeat(30));
+                        System.out.println("-".repeat(30) + "< LEVEL-ORDER TRAVERSAL >" + "-".repeat(30));
                         avlTree.levelOrderTraversal(root);
-                        System.out.println("-".repeat(60));
                     }
                     case 7 -> {
-                        System.out.println("-".repeat(30) + "< post-order >" + "-".repeat(30));
+                        System.out.println("-".repeat(30) + "< POST-ORDER TRAVERSAL >" + "-".repeat(30));
                         avlTree.postOrderTraversal(root);
-                        System.out.println("-".repeat(60));
                     }
                     case 8 -> {
-                        System.out.println("-".repeat(30) + "< Height of the tree >" + "-".repeat(30));
+                        System.out.println("-".repeat(30) + "< HEIGHT OF THE TREE >" + "-".repeat(30));
                         System.out.println(0);
-                        System.out.println("-".repeat(60));
                     }
                     case 9 -> {
-                        System.out.println("-".repeat(30) + "< delete element >" + "-".repeat(30));
+                        System.out.println("-".repeat(30) + "< DELETE NODE >" + "-".repeat(30));
                         System.out.print("Enter element to delete:");
                         int data = scanner.nextInt();
                         avlTree.deleteNode(data);
-                        System.out.println("-".repeat(60));
                     }
                     case 10 -> System.exit(0);
                     case 11 -> System.out.println(avlTree.getNodeOf(scanner.nextInt()));
+                    case 12 -> avlTree.getElement(scanner.nextInt());
                     default -> printUtils.printErrorMessage("---Invalid option selected---");
                 }
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                e.printStackTrace();
                 printUtils.printErrorMessage(e.getMessage());
                 scanner.next();
             }
-            System.out.println("-----------------------------------------------------------");
         } while (true);
     }
 
@@ -113,15 +107,16 @@ public class AVLTree {
             }
             seq.add(0, node);
         }
-        makeBalanced(seq);
+        analyseThePath(seq);
         seq.clear();
     }
 
     private void deleteNode(int data) {
         BinaryNode temp;
+        ArrayList<BinaryNode> seq = new ArrayList<>();
         for (BinaryNode node = root, parent = root; node != null; ) {
             if (node.data == data) {
-                System.out.println("Element " + data + "Found, deleting it....");
+                System.out.println("Node found, deleting.....");
                 if (node.right != null) {
                     temp = node.right;
                     if (temp.left != null) {
@@ -147,86 +142,38 @@ public class AVLTree {
                         node.left = temp.left;
                     }
                 } else {
-                    if (parent == root) root = null;
-                    else {
+                    if (parent == node) root = null;
+                    else{
                         if (data <= parent.data) parent.left = null;
                         else parent.right = null;
                     }
                 }
-                levelOrderTraversal(root);
+                for (int i = 0; i < seq.size(); i++) {
+                    int lh = getHeightsOfNode(seq.get(i).left, 0);
+                    int rh = getHeightsOfNode(seq.get(i).right, 0);
+                    if (Math.abs(lh - rh) > 1) {
+                        System.out.println("L->" + getHeightsOfNode(seq.get(i).left, 0) + " R->" + getHeightsOfNode(seq.get(i).right, 0));
+                        analyseThePath(seq);
+                        break;
+                    }
+                }
+                printUtils.printWarningMessage("Node [" + data + "] deleted!");
+                seq.clear();
                 break;
             } else if (node.left != null && node.data >= data) {
+                seq.add(0, node);
                 parent = node;
                 node = node.left;
             } else if (node.right != null && node.data < data) {
+                seq.add(0, node);
                 parent = node;
                 node = node.right;
             } else {
                 System.out.println("No such data exists in the AVL tree.");
+                seq.clear();
                 break;
             }
         }
-    }
-
-    private void printMenu() {
-        System.out.println("\u001B[34m" + """
-                ************ AVL Tree ************
-                1 Insert
-                2 Search
-                3 Print Root
-                4 Traverse (in-order)
-                5 Traverse (pre-order)
-                6 Traversal (level-order)
-                7 Traverse (post-order)
-                8 Find Height
-                9 Remove Element
-                10 Exit
-                11 Get Height
-                ************ AVL Tree ************""" + "\u001B[0m");
-    }
-
-    private void makeBalanced(ArrayList<BinaryNode> seq) {
-        for (int i = 2; i < seq.size(); i++) {
-            if (Math.abs((getHeightsOfNode(seq.get(i).left, 0)) - getHeightsOfNode(seq.get(i).right, 0)) > 1) {
-                BinaryNode imbalancedNode, parentNode, childNode, grandChildNode;
-                imbalancedNode = seq.get(i);
-                parentNode = (i == seq.size() - 1) ? null : seq.get(i + 1);
-                childNode = seq.get(i - 1);
-                grandChildNode = seq.get(i - 2);
-                if (childNode.data <= imbalancedNode.data) {
-                    if (grandChildNode.data <= childNode.data) {
-                        System.out.println(parentNode == null ? ("Right Rotation [" + grandChildNode.data + ", " + childNode.data + ", " + imbalancedNode.data + "]") : ("Right Rotation [" + childNode.data + ", " + imbalancedNode.data + ", " + parentNode.data + "]"));
-                        rotateRight(imbalancedNode, parentNode);
-                    } else {
-                        System.out.println(parentNode == null ? ("Right Rotation [" + grandChildNode.data + ", " + childNode.data + ", " + imbalancedNode.data + "]") : ("Right Rotation [" + childNode.data + ", " + imbalancedNode.data + ", " + parentNode.data + "]"));
-                        rotateLeft(childNode, imbalancedNode);
-                        rotateRight(imbalancedNode, parentNode);
-                    }
-                } else {
-                    if (grandChildNode.data > childNode.data) {
-                        System.out.println(parentNode == null ? ("Right Rotation [" + grandChildNode.data + ", " + childNode.data + ", " + imbalancedNode.data + "]") : ("Right Rotation [" + childNode.data + ", " + imbalancedNode.data + ", " + parentNode.data + "]"));
-                        rotateLeft(imbalancedNode, parentNode);
-                    } else {
-                        System.out.println(parentNode == null ? ("Right Rotation [" + grandChildNode.data + ", " + childNode.data + ", " + imbalancedNode.data + "]") : ("Right Rotation [" + childNode.data + ", " + imbalancedNode.data + ", " + parentNode.data + "]"));
-                        rotateRight(childNode, imbalancedNode);
-                        rotateLeft(imbalancedNode, parentNode);
-                    }
-                }
-                break;
-            }
-        }
-    }
-
-    protected String searchElement(int data) {
-        BinaryNode tmp = root;
-        int level = 0;
-        while (tmp != null) {
-            level++;
-            if (data < tmp.data) tmp = tmp.left;
-            else if (data > tmp.data) tmp = tmp.right;
-            else break;
-        }
-        return tmp != null ? "Element " + data + " found at level " + level : "Element " + data + " Not found!";
     }
 
     protected void rotateLeft(BinaryNode imbalancedNode, BinaryNode parent) {
@@ -249,12 +196,108 @@ public class AVLTree {
         else root = r;
     }
 
+    private void makeBalanced(ArrayList<BinaryNode> seq) {
+        for (int i = 2; i < seq.size(); i++) {
+            if (Math.abs((getHeightsOfNode(seq.get(i).left, 0)) - getHeightsOfNode(seq.get(i).right, 0)) > 1) {
+                BinaryNode imbalancedNode, parentNode, childNode, grandChildNode;
+                imbalancedNode = seq.get(i);
+                parentNode = (i == seq.size() - 1) ? null : seq.get(i + 1);
+                childNode = seq.get(i - 1);
+                grandChildNode = seq.get(i - 2);
+                if (childNode.data <= imbalancedNode.data) {
+                    if (grandChildNode.data <= childNode.data) {
+                        System.out.println("Right Rotation [" + grandChildNode.data + ", " + childNode.data + ", " + imbalancedNode.data + "]");
+                        rotateRight(imbalancedNode, parentNode);
+                    } else {
+                        System.out.println("Left Rotation [" + childNode.data + ", " + imbalancedNode.data + "]");
+                        rotateLeft(childNode, imbalancedNode);
+                        System.out.println("Right Rotation [" + imbalancedNode.data + ", " + childNode.data + ", " + grandChildNode.data + "]");
+                        rotateRight(imbalancedNode, parentNode);
+                    }
+                } else {
+                    if (grandChildNode.data > childNode.data) {
+                        System.out.println("Left Rotation [" + imbalancedNode.data + ", " + childNode.data + ", " + grandChildNode.data + "]");
+                        rotateLeft(imbalancedNode, parentNode);
+                    } else {
+                        System.out.println("Right Rotation [" + childNode.data + ", " + grandChildNode.data + "]");
+                        rotateRight(childNode, imbalancedNode);
+                        System.out.println("Left Rotation [" + grandChildNode.data + ", " + childNode.data + ", " + imbalancedNode.data + "]");
+                        rotateLeft(imbalancedNode, parentNode);
+                    }
+                }
+                break;
+            }
+        }
+    }
+
+    protected String searchElement(int data) {
+        BinaryNode tmp = root;
+        int level = 0;
+        while (tmp != null) {
+            level++;
+            if (data < tmp.data) tmp = tmp.left;
+            else if (data > tmp.data) tmp = tmp.right;
+            else break;
+        }
+        return tmp != null ? "Element " + data + " found at level " + level : "Element " + data + " Not found!";
+    }
+
+    protected void getElement(int data) {
+        BinaryNode tmp = root;
+        int level = 0;
+        while (tmp != null) {
+            level++;
+            if (data < tmp.data) tmp = tmp.left;
+            else if (data > tmp.data) tmp = tmp.right;
+            else break;
+        }
+        System.out.println(tmp == null ? "null" : (tmp.data + "[P] ->" +
+                (tmp.left == null ? "null" : tmp.left.data)) + "[L] ->" +
+                (tmp.right == null ? "null" : tmp.right.data) + "[R]");
+    }
+
+    private void initializeRotation(boolean isLeft, BinaryNode node, BinaryNode parent) {
+        System.out.println("Initializing.....");
+        if (isLeft) {
+            if (node.left.left != null) {
+                System.out.println("Right Rotation [" + node.data + ", " + (parent == null ? null : parent.data) + "]");
+                rotateRight(node, parent);
+            } else {
+                System.out.println("Left Rotation [" + node.left.data + ", " + node.data + "]");
+                rotateLeft(node.left, node);
+                System.out.println("Right Rotation [" + node.data + ", " + (parent == null ? null : parent.data) + "]");
+                rotateRight(node, parent);
+            }
+        } else {
+            if (node.right.right != null) {
+                System.out.println("Left Rotation [" + node.data + ", " + (parent == null ? null : parent.data) + "]");
+                rotateLeft(node, parent);
+            } else {
+                System.out.println("Right Rotation [" + node.right.data + ", " + node.data + "]");
+                rotateRight(node.right, node);
+                System.out.println("Left Rotation [" + node.data + ", " + (parent == null ? null : parent.data) + "]");
+                rotateLeft(node, parent);
+
+            }
+        }
+    }
+
+    private void analyseThePath(ArrayList<BinaryNode> seq) {
+        for (int i = 0; i < seq.size(); i++) {
+            int leftHeight = getHeightsOfNode(seq.get(i).left, 0), rightHeight = getHeightsOfNode(seq.get(i).right, 0);
+            if (Math.abs(leftHeight - rightHeight) > 1) {
+                initializeRotation(leftHeight > rightHeight, seq.get(i), (i != seq.size() - 1) ? seq.get(i + 1) : null);
+            }
+        }
+    }
+
+
     protected int getNodeOf(int data) {
         BinaryNode tmp = root;
         while (tmp != null) {
             if (data < tmp.data) tmp = tmp.left;
             else if (data > tmp.data) tmp = tmp.right;
-            else return getHeightsOfNode(tmp, 0);
+            else return Math.abs(getHeightsOfNode(tmp.left, 0) - getHeightsOfNode(tmp.right, 0));
         }
         return -1;
     }
