@@ -6,15 +6,16 @@ public class Stack {
     SNode top = null;
     SNode temp = null;
     int count = 0;
-    public static void main(String[] args){
+
+    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Stack stack = new Stack();
         final int MAX_ELEMENTS = 100;
         boolean isUserWantsToContinue;
         int noOfElements = 0;
         int[] dataArray;
-        do{
-            try{
+        do {
+            try {
                 System.out.println("************ STACK ************");
                 System.out.println("""
                         \t1 Append
@@ -41,23 +42,23 @@ public class Stack {
                     }
                     case 2 -> {
                         System.out.println("-----------------------------------------------------------");
-                        System.out.println("Popped "+stack.pop());
+                        System.out.println("Popped " + stack.pop());
                         System.out.println("-----------------------------------------------------------");
                     }
                     case 3 -> {
                         System.out.println("-----------------------------------------------------------");
-                        System.out.println("top element is "+ stack.top.data);
+                        System.out.println("top element is " + stack.top.data);
                         System.out.println("-----------------------------------------------------------");
                     }
                     case 4 -> {
                         System.out.println("-----------------------------------------------------------");
-                        System.out.println("Stack is"+(stack.count==0?" Empty!":" not Empty!"));
+                        System.out.println("Stack is" + (stack.count == 0 ? " Empty!" : " not Empty!"));
                         System.out.println("-----------------------------------------------------------");
                     }
                     case 5 -> {
-                        System.out.println("Stack is "+(stack.count== MAX_ELEMENTS?"Full!":"not Full!"));
+                        System.out.println("Stack is " + (stack.count == MAX_ELEMENTS ? "Full!" : "not Full!"));
                     }
-                    case 6 ->{
+                    case 6 -> {
                         System.out.println("-----------------------------------------------------------");
                         stack.top = null;
                         stack.count = 0;
@@ -66,32 +67,32 @@ public class Stack {
                     }
                     default -> System.out.println("---Invalid option selected---");
                 }
-            } catch(Exception e){
+            } catch (Exception e) {
                 System.out.println("something went wrong...  press any key to continue");
                 e.printStackTrace();
                 scanner.next();
             }
             System.out.print("do you want to continue[y/n]:");
-            isUserWantsToContinue =  scanner.next().equalsIgnoreCase("Y");
+            isUserWantsToContinue = scanner.next().equalsIgnoreCase("Y");
             System.out.println("-----------------------------------------------------------");
-        }while (isUserWantsToContinue);
+        } while (isUserWantsToContinue);
     }
 
     private void append(int[] dataArray) {
-        for(int i : dataArray){
+        for (int i : dataArray) {
             temp = new SNode(i);
-            if(top==null){
+            if (top == null) {
                 top = temp;
-            }
-            else {
+            } else {
                 temp.next = top;
                 top = temp;
             }
             count++;
         }
     }
-    private int pop(){
-        if(top == null){
+
+    private int pop() {
+        if (top == null) {
             return -101;
         }
         count--;
