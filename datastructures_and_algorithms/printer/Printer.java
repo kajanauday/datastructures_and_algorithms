@@ -1,4 +1,4 @@
-package datastructures_and_algorithms;
+package datastructures_and_algorithms.printer;
 
 import java.util.List;
 
@@ -8,7 +8,6 @@ public class Printer {
     public final String GREEN = "\u001B[32m";
     public final String YELLOW = "\u001B[33;1m";
     public final String ORANGE = "\u001B[33m";
-    public final String PINK = "\u001B[35m";
     public final String DARK_BLUE = "\u001B[34m";
 
     public void printErrorMessage(String errorMessage) {

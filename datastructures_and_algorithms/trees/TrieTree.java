@@ -1,6 +1,6 @@
 package datastructures_and_algorithms.trees;
 
-import datastructures_and_algorithms.Printer;
+import datastructures_and_algorithms.printer.Printer;
 
 import java.util.Arrays;
 import java.util.HashMap;
