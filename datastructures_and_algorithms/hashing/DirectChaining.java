@@ -19,7 +19,6 @@ public class DirectChaining {
     public static void main(String[] args) {
         DirectChaining directChaining = new DirectChaining();
         Scanner scanner = new Scanner(System.in);
-        Printer printer = new Printer();
         List<String> menu = Arrays.asList("1. INSERT", "2. SEARCH", "3. DELETE", "4. TRAVERSE ", "5. EXIT(0)");
         while (true) {
             printer.printMenu("Direct Chain", "-", menu);
@@ -81,7 +80,7 @@ public class DirectChaining {
 
     private void insertWord(String word) {
         int newIndex = hashFunction(word);
-        if (hashTable[newIndex] == null) hashTable[newIndex] = new LinkedList<String>();
+        if (hashTable[newIndex] == null) hashTable[newIndex] = new LinkedList<>();
         hashTable[newIndex].add(word);
 
     }

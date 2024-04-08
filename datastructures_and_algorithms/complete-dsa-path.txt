@@ -92,13 +92,13 @@ Complete DSA Roadmap🔥
   |-- Advanced_Topics
   |     |-- Trie-based_Algorithms
   |     |     |-- Auto-completion
-  |     |    └─ Spell_Checker
+  |     |     └─ Spell_Checker
   |     |
   |     |-- Suffix_Trees_and_Arrays
   |     |-- Computational_Geometry
   |     |-- Number_Theory
   |     |     |-- Euler's_Totient_Function
-  |     |    └─ Mobius_Function
+  |     |     └─ Mobius_Function
   |     |
   |     └─ String_Algorithms
   |            |-- KMP_Algorithm
