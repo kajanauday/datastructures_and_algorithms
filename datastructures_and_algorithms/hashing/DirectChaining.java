@@ -54,7 +54,7 @@ public class DirectChaining {
                 case 5 -> System.exit(0);
             }
         }
-    }
+        }
 
     private void showTable(int index) {
         for (String word : hashTable[index])
