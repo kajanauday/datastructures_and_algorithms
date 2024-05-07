@@ -1,4 +1,4 @@
-package datastructures_and_algorithms.trees;
+package trees;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package datastructures_and_algorithms.trees;
+package trees;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -75,7 +75,10 @@ public class BinarySearchTree {
                         binarySearchTree.delete(data);
                         System.out.println("-".repeat(60));
                     }
-                    case 10 -> System.exit(0);
+                    case 10 -> {
+                        scanner.close();
+                        System.exit(0);
+                    }
                     default -> printErrorMessage("---Invalid option selected---");
                 }
             } catch (Exception e) {

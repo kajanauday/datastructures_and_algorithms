@@ -1,4 +1,4 @@
-package datastructures_and_algorithms.printer;
+package printer;
 
 import java.util.List;
 

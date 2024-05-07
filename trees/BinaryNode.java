@@ -1,4 +1,4 @@
-package datastructures_and_algorithms.trees;
+package trees;
 
 public class BinaryNode {
     BinaryNode left;

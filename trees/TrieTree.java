@@ -1,11 +1,11 @@
-package datastructures_and_algorithms.trees;
-
-import datastructures_and_algorithms.printer.Printer;
+package trees;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
+
+import printer.Printer;
 
 public class TrieTree {
     static Printer printer = new Printer();
@@ -34,8 +34,10 @@ public class TrieTree {
                         System.out.print("Enter String to Search: ");
                         String string = scanner.next();
                         boolean found = tree.searchString(string);
-                        if (found) printer.printSuccessMessage("'" + string + "' is in the tree!");
-                        else printer.printFailureMessage("'" + string + "' is not in the tree!");
+                        if (found)
+                            printer.printSuccessMessage("'" + string + "' is in the tree!");
+                        else
+                            printer.printFailureMessage("'" + string + "' is not in the tree!");
                     }
                     case 3 -> {
                         tree.deleteString(scanner.next());
@@ -44,6 +46,7 @@ public class TrieTree {
                     case 4 -> tree.traverseTree();
                     case 5 -> {
                         System.out.println("Have a good day!");
+                        scanner.close();
                         System.exit(0);
                     }
                     default -> System.out.println("Invalid selection\nEnter any key to continue....");
@@ -55,7 +58,8 @@ public class TrieTree {
     }
 
     private void insertString(String string) {
-        if (!root.children.containsKey(string.charAt(0))) root.children.put(string.charAt(0), null);
+        if (!root.children.containsKey(string.charAt(0)))
+            root.children.put(string.charAt(0), null);
         TrieNode node = root;
         for (int i = 0; i < string.length() - 1; i++) {
             if (node.children.get(string.charAt(i)) == null) {
@@ -75,7 +79,8 @@ public class TrieTree {
             char nextChar = string.charAt(i + 1);
             if (node.children.containsKey(currentChar) && node.children.get(currentChar).containsKey(nextChar)) {
                 node = node.children.get(currentChar).get(nextChar);
-            } else return false;
+            } else
+                return false;
         }
         return true;
     }
@@ -87,26 +92,31 @@ public class TrieTree {
         while (node != null) {
             System.out.print("Choose from " + node.children.keySet() + ":");
             c = scanner.next().charAt(0);
-            if (c == '$') return;
+            if (c == '$')
+                return;
             if (node.children.containsKey(c)) {
                 System.out.print("Choose from " + node.children.get(c).keySet() + ":");
                 d = scanner.next().charAt(0);
-                if (node.children.get(c).containsKey(d)) node = node.children.get(c).get(d);
+                if (node.children.get(c).containsKey(d))
+                    node = node.children.get(c).get(d);
             }
-
         }
+        scanner.close();
     }
 
     private void deleteString(String string) {
         if (searchString(string)) {
             deleteEntry(string, 0, root);
-            if (root.children.get(string.charAt(0)).isEmpty()) root.children.remove(string.charAt(0));
+            if (root.children.get(string.charAt(0)).isEmpty())
+                root.children.remove(string.charAt(0));
             printer.printSuccessMessage("[" + string + "] is deleted from the Trie...");
-        } else printer.printFailureMessage("[" + string + "] not found in Trie! aborting the deletion...");
+        } else
+            printer.printFailureMessage("[" + string + "] not found in Trie! aborting the deletion...");
     }
 
     private void deleteEntry(String string, int index, TrieNode node) {
-        if (node == null || index == string.length() - 1) return;
+        if (node == null || index == string.length() - 1)
+            return;
         deleteEntry(string, index + 1, node.children.get(string.charAt(index)).get(string.charAt(index + 1)));
         if (deletionNeeded) {
             deletionNeeded = !(node.children.get(string.charAt(index)).size() > 1);

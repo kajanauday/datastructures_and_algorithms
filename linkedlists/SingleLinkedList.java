@@ -1,27 +1,26 @@
-package datastructures_and_algorithms.linkedlists;
+package linkedlists;
 
 import java.util.Scanner;
 
-class CNode {
+class SNode {
     int data;
-    CNode next;
-    CNode prev;
+    SNode next;
 
-    CNode(int data) {
+    SNode(int data) {
         this.data = data;
         this.next = null;
     }
 }
 
-public class CircularLinkedList {
-    CNode head = null;
-    CNode tail = null;
-    CNode temp = null;
+public class SingleLinkedList {
+
+    SNode head = null;
+    SNode tail = null;
+    SNode temp = null;
     int count = 0;
-    boolean nodeFound;
 
     public static void main(String[] args) {
-        CircularLinkedList circularLinkedList = new CircularLinkedList();
+        SingleLinkedList singleLinkedList = new SingleLinkedList();
         boolean isUserWantsToContinue;
         int[] dataArray;
         int index;
@@ -29,18 +28,18 @@ public class CircularLinkedList {
         int noOfElements;
         do {
             try {
-                System.out.println("****************************** CIRCULAR LINKED LIST ******************************");
+                System.out.println("****************************** SINGLY LINKED LIST ******************************");
                 System.out.print("""
-                         Select transaction:
-                          \t1 Insert
-                          \t2 Insert|index
-                          \t3 Traverse
-                          \t4 Delete
-                          \t5 Search
-                          \t6 Delete|index
-                        Please enter your option:""");
+                        Select transaction:
+                        \t2 Insert|index
+                        \t1 Insert
+                        \t3 Delete
+                        \t4 Delete|index
+                        \t5 Search
+                        \t6 Count
+                        \t7 TraversePlease enter your option:""");
                 int option = scanner.nextInt();
-                System.out.println("****************************** CIRCULAR LINKED LIST ******************************");
+                System.out.println("****************************** SINGLY LINKED LIST ******************************");
                 switch (option) {
                     case 1 -> {
                         System.out.println("-----------------------------------------------------------");
@@ -51,7 +50,7 @@ public class CircularLinkedList {
                             System.out.print("Enter [" + (i + 1) + "] Element: ");
                             dataArray[i] = scanner.nextInt();
                         }
-                        circularLinkedList.insertData(dataArray, circularLinkedList.count);
+                        singleLinkedList.insertData(dataArray, singleLinkedList.count);
                         System.out.println("------------------------------------------------------------");
                     }
                     case 2 -> {
@@ -65,31 +64,31 @@ public class CircularLinkedList {
                         }
                         System.out.println("Enter index: ");
                         index = scanner.nextInt();
-                        circularLinkedList.insertData(dataArray, index);
+                        singleLinkedList.insertData(dataArray, index);
                         System.out.println("------------------------------------------------------------");
                     }
                     case 3 -> {
                         System.out.println("-----------------------------------------------------------");
-                        circularLinkedList.traverseCircularLinkedList(circularLinkedList.head);
+                        System.out.print("Enter data to delete:");
+                        singleLinkedList.deleteData(scanner.nextInt());
                         System.out.println("-----------------------------------------------------------");
                     }
                     case 4 -> {
                         System.out.println("-----------------------------------------------------------");
-                        System.out.print("Enter data to delete:");
-                        circularLinkedList.deleteData(scanner.nextInt());
+                        System.out.print("Enter index to delete:");
+                        singleLinkedList.deleteDataAt(scanner.nextInt());
                         System.out.println("-----------------------------------------------------------");
                     }
                     case 5 -> {
                         System.out.println("-----------------------------------------------------------");
                         System.out.print("Enter element to search:");
-                        System.out.println(circularLinkedList.searchData(scanner.nextInt()));
+                        System.out.println(singleLinkedList.searchData(scanner.nextInt()));
                         System.out.println("-----------------------------------------------------------");
-
                     }
-                    case 6 -> {
+                    case 6 -> System.out.println("Number of Elements in list:" + singleLinkedList.count);
+                    case 7 -> {
                         System.out.println("-----------------------------------------------------------");
-                        System.out.print("Enter index to delete:");
-                        circularLinkedList.deleteDataAt(scanner.nextInt());
+                        singleLinkedList.traverseCircularLinkedList(singleLinkedList.head);
                         System.out.println("-----------------------------------------------------------");
                     }
                     default -> System.out.println("---Invalid option selected---");
@@ -105,43 +104,25 @@ public class CircularLinkedList {
         scanner.close();
     }
 
-    private void deleteDataAt(int index) {
-        temp = head;
-        if (index < 2 && head != null) {
-            head = head.next;
-            tail.next = head;
-        } else if (index <= count) {
-            for (int i = 1; i < index - 1; i++) {
-                temp = temp.next;
-            }
-            if (temp.next != null) {
-                temp.next = temp.next.next;
-            } else {
-                temp.next = null;
-            }
-        }
-        count--;
-    }
-
-    private void deleteData(int data1) {
-        nodeFound = false;
-        if (head != null && head.data == data1) {
+    private void deleteData(int data) {
+        boolean nodeFound = false;
+        if (head != null && head.data == data) {
             if (head.next == null) head = tail = null;
-            else tail.next = head = head.next;
+            else head = head.next;
             nodeFound = true;
         } else {
-            CNode cnode = head;
-            do {
-                if (cnode.next.data == data1) {
-                    if (cnode.next == tail) {
-                        tail = cnode;
+            SNode snode = head;
+            while (snode != null) {
+                if (snode.next.data == data) {
+                    if (snode.next == tail) {
+                        tail = snode;
                     }
-                    cnode.next = cnode.next.next;
+                    snode.next = snode.next.next;
                     nodeFound = true;
                     break;
                 }
-                cnode = cnode.next;
-            } while (cnode != head);
+                snode = snode.next;
+            }
         }
         if (nodeFound) {
             System.out.println("Element deleted");
@@ -152,61 +133,75 @@ public class CircularLinkedList {
     }
 
     private boolean searchData(int data) {
-        CNode cnode = head;
-        do {
-            if (cnode.data == data) {
-                nodeFound = false;
+        for (SNode snode = head; snode != null; snode = snode.next) {
+            if (snode.data == data) {
                 return true;
             }
-            cnode = cnode.next;
-        } while (cnode != head);
+        }
         return false;
     }
 
+    private void deleteDataAt(int index) {
+        temp = head;
+        if (index < 2 && head != null) {
+            head = head.next;
+        } else if (index <= count) {
+            for (int i = 1; i < index - 1; i++) {
+                temp = temp.next;
+            }
+            if (temp.next != null) {
+                temp.next = temp.next.next;
+            } else {
+                temp.next = null;
+            }
+        } else {
+            System.out.println("Invalid index");
+            return;
+        }
+        count--;
+    }
+
+    private void traverseCircularLinkedList(SNode head) {
+        for (SNode snode = head; snode != null; snode = snode.next) {
+            System.out.print(snode.data + "-->");
+        }
+        System.out.println("null");
+    }
+
     private void insertData(int[] data, int index) {
-        CNode hold = null;
-        CNode startNode = null;
-        CNode endNode = null;
+        if (index > count) index = count;
+        SNode startNode = null;
+        SNode endNode = null;
         int noOfElements = 0;
         temp = head;
         for (int d : data) {
-            CNode cnode = new CNode(d);
+            SNode snode = new SNode(d);
             if (startNode == null) {
-                startNode = cnode;
-                endNode = cnode;
+                startNode = snode;
+                endNode = snode;
             }
-            endNode.next = cnode;
-            endNode = cnode;
+            endNode.next = snode;
+            endNode = snode;
             noOfElements++;
         }
         if (head == null && tail == null) {
             head = startNode;
             tail = endNode;
-            tail.next = head;
+            tail.next = null;
         } else if (index < 2) {
             endNode.next = head;
-            tail.next = head = startNode;
+            head = startNode;
         } else if (index < count) {
             for (int i = 1; i < index - 1; i++) {
                 temp = temp.next;
             }
-            hold = temp.next;
+            endNode.next = temp.next;
             temp.next = startNode;
-            tail = endNode;
-            tail.next = hold;
         } else if (index == count) {
             tail.next = startNode;
             tail = endNode;
-            tail.next = head;
+            tail.next = null;
         }
         count = count + noOfElements;
-    }
-
-    private void traverseCircularLinkedList(CNode temp) {
-        for (int i = 0; i < count; i++) {
-            System.out.print(temp.data + "--> ");
-            temp = temp.next;
-        }
-        System.out.println("null");
     }
 }

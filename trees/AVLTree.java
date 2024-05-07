@@ -1,6 +1,6 @@
-package datastructures_and_algorithms.trees;
+package trees;
 
-import datastructures_and_algorithms.printer.Printer;
+import printer.Printer;
 
 import java.util.*;
 
@@ -81,7 +81,10 @@ public class AVLTree {
                                 : "Height of Node[" + data + "] is :" + avlTree.getHeightsOfNode(node, 0));
                     }
                     case 9 -> avlTree.getElement(scanner.nextInt());
-                    case 10 -> System.exit(0);
+                    case 10 -> {
+                        scanner.close();
+                        System.exit(0);
+                    }
                     default -> printer.printErrorMessage("---Invalid option selected---");
                 }
             } catch (Exception e) {

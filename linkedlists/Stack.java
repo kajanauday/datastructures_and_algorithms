@@ -1,4 +1,4 @@
-package datastructures_and_algorithms.linkedlists;
+package linkedlists;
 
 import java.util.Scanner;
 
@@ -23,7 +23,8 @@ public class Stack {
                         \t3 Top
                         \t4 isEmpty
                         \t5 isFull
-                        \t6 Clear""");
+                        \t6 Clear
+                        \t7 Exit""");
                 System.out.println("************ STACK ************");
                 System.out.print("Please enter your option:");
                 int option = scanner.nextInt();
@@ -64,6 +65,10 @@ public class Stack {
                         stack.count = 0;
                         System.out.println("Stack is cleared!");
                         System.out.println("-----------------------------------------------------------");
+                    }
+                    case 7 ->{
+                        scanner.close();
+                        System.exit(0);
                     }
                     default -> System.out.println("---Invalid option selected---");
                 }

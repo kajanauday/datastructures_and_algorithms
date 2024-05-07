@@ -1,4 +1,4 @@
-package datastructures_and_algorithms.linkedlists;
+package linkedlists;
 
 import java.util.Scanner;
 
@@ -24,7 +24,8 @@ public class Queue {
                         \t3 Front
                         \t4 isEmpty
                         \t5 isFull
-                        \t6 Clear""");
+                        \t6 Clear
+                        \t7 Exit""");
                 System.out.println("************ QUEUE ************");
                 System.out.print("Please enter your option:");
                 int option = scanner.nextInt();
@@ -63,6 +64,10 @@ public class Queue {
                         queue.count = 0;
                         System.out.println("Queue is cleared!");
                         System.out.println("-----------------------------------------------------------");
+                    }
+                    case 7 ->{
+                        scanner.close();
+                        System.exit(0);
                     }
                     default -> System.out.println("---Invalid option selected---");
                 }

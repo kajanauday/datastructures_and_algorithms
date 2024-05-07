@@ -1,10 +1,8 @@
-package datastructures_and_algorithms.sorting;
-
-import datastructures_and_algorithms.printer.Printer;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+
+import printer.Printer;
 
 public class Sort {
     static Printer printer = new Printer();
@@ -43,7 +41,10 @@ public class Sort {
                     sort.quickSort(0, sort.melements.length - 1);
                     sort.printArray("AFTER  :", sort.melements);
                 }
-                case 6 -> System.exit(0);
+                case 6 -> {
+                    scanner.close();
+                    System.exit(0);
+                }
             }
             printer.printFooter("-", menu.get(selection - 1).length());
         }
