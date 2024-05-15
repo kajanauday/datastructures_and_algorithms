@@ -1,8 +1,7 @@
 package trees;
 
-import printer.Printer;
-
 import java.util.*;
+import printer.Printer;
 
 public class AVLTree {
     private static BinaryNode root;
@@ -25,8 +24,6 @@ public class AVLTree {
                 "9 CHILDREN OF",
                 "10 EXIT(0)");
         int noOfElements;
-        
-
         do {
             try {
                 printer.printMenu("AVL TREE", "*", menu);

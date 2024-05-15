@@ -198,7 +198,7 @@ public class BinarySearchTree {
         else return RIGHT_NODE;
     }
 
-    String searchElement(int data) {
+    private String searchElement(int data) {
         BinaryNode tmp = root;
         int level = 0;
         while (tmp != null) {
