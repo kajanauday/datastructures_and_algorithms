@@ -11,7 +11,6 @@ public class AVLTree {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         AVLTree avlTree = new AVLTree();
-        Printer printer = new Printer();
         List<String> menu = Arrays.asList(
                 "1 INSERT",
                 "2 SEARCH",
@@ -26,7 +25,7 @@ public class AVLTree {
         int noOfElements;
         do {
             try {
-                printer.printMenu("AVL TREE", "*", menu);
+                Printer.printMenu("AVL TREE", "*", menu);
                 System.out.print("Please enter your option:");
                 int option = scanner.nextInt();
                 switch (option) {
@@ -82,10 +81,10 @@ public class AVLTree {
                         scanner.close();
                         System.exit(0);
                     }
-                    default -> printer.printErrorMessage("---Invalid option selected---");
+                    default -> Printer.printErrorMessage("---Invalid option selected---");
                 }
             } catch (Exception e) {
-                printer.printErrorMessage(e.getMessage());
+                Printer.printErrorMessage(e.getMessage());
                 scanner.next();
             }
         } while (true);
@@ -175,7 +174,7 @@ public class AVLTree {
                         break;
                     }
                 }
-                printer.printWarningMessage("Node [" + data + "] deleted!");
+                Printer.printWarningMessage("Node [" + data + "] deleted!");
                 seq.clear();
                 break;
             } else if (node.left != null && node.data >= data) {

@@ -21,7 +21,7 @@ public class DirectChaining {
         Scanner scanner = new Scanner(System.in);
         List<String> menu = Arrays.asList("1. INSERT", "2. SEARCH", "3. DELETE", "4. TRAVERSE ", "5. EXIT(0)");
         while (true) {
-            printer.printMenu("Direct Chain", "-", menu);
+            Printer.printMenu("Direct Chain", "-", menu);
             System.out.print("Choose your option :");
             switch (scanner.nextInt()) {
                 case 1 -> {
@@ -37,17 +37,17 @@ public class DirectChaining {
                     String word = scanner.next();
                     int index = directChaining.searchWord(word);
                     if (index > -1)
-                        printer.printSuccessMessage(word + " is present in the hash table at [" + index + "]");
+                        Printer.printSuccessMessage(word + " is present in the hash table at [" + index + "]");
                     else
-                        printer.printFailureMessage(word + " is not present in the hash table!");
+                        Printer.printFailureMessage(word + " is not present in the hash table!");
                 }
                 case 3 -> {
                     System.out.print("Enter word to delete :");
                     String word = scanner.next();
                     if (directChaining.deleteWord(word))
-                        printer.printSuccessMessage(word + "  is deleted from the hash table");
+                        Printer.printSuccessMessage(word + "  is deleted from the hash table");
                     else
-                        printer.printFailureMessage(word + " is not deleted!");
+                        Printer.printFailureMessage(word + " is not deleted!");
                 }
                 case 4 -> {
                     System.out.println("Enter index of hash table to see the entries :");

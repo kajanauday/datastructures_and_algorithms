@@ -12,12 +12,13 @@ public class Sort {
         Scanner scanner = new Scanner(System.in);
         Sort sort = new Sort();
         int selection;
-        List<String> menu = Arrays.asList("1. BUBBLE", "2. SELECTION", "3. INSERTION", "4. MERGE", "5. QUICK ", "6. EXIT");
+        List<String> menu = Arrays.asList("1. BUBBLE", "2. SELECTION", "3. INSERTION", "4. MERGE", "5. QUICK ",
+                "6. EXIT");
         while (true) {
-            printer.printMenu("SORT", "=", menu);
+            Printer.printMenu("SORT", "=", menu);
             System.out.print("Choose your option :");
             selection = scanner.nextInt();
-            printer.printHeader(menu.get(selection - 1), "-");
+            Printer.printHeader(menu.get(selection - 1), "-");
             System.out.print("Enter elements :");
             scanner.nextLine();
             String input = scanner.nextLine();
@@ -46,25 +47,21 @@ public class Sort {
                     System.exit(0);
                 }
             }
-            printer.printFooter("-", menu.get(selection - 1).length());
+            Printer.printFooter("-", menu.get(selection - 1).length());
         }
     }
 
     private void quickSort(int start, int end) {
-        if (start >= end) return;
-        if ((end - start == 2) && melements[end] < melements[start]) swap(start, end);
+        if (start >= end)
+            return;
+        if ((end - start == 2) && melements[end] < melements[start])
+            swap(start, end);
         int i = start, j = end - 1;
-        while ((i < end) && melements[i] < melements[end]) i++;
-        while ((j > i) && melements[j] > melements[end]) j--;
+        while ((i < end) && melements[i] < melements[end])
+            i++;
+        while ((j > i) && melements[j] > melements[end])
+            j--;
 
-    }
-
-    private void swap(int i, int j) {
-        System.out.println("SWAP :" + melements[i] + "[" + i + "]" + " and " + melements[j] + "[" + j + "]");
-        int temp = melements[i];
-        melements[i] = melements[j];
-        melements[j] = temp;
-        System.out.println(Arrays.toString(Arrays.stream(melements).toArray()));
     }
 
     private void bubbleSort(int[] elements) {
@@ -142,6 +139,14 @@ public class Sort {
         for (i = l; i <= h; i++) {
             melements[i] = a[k++];
         }
+    }
+
+    private void swap(int i, int j) {
+        System.out.println("SWAP :" + melements[i] + "[" + i + "]" + " and " + melements[j] + "[" + j + "]");
+        int temp = melements[i];
+        melements[i] = melements[j];
+        melements[j] = temp;
+        System.out.println(Arrays.toString(Arrays.stream(melements).toArray()));
     }
 
     private void printArray(String status, int[] nums) {

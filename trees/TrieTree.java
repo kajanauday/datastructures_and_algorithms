@@ -19,7 +19,7 @@ public class TrieTree {
         List<String> menu = Arrays.asList("1. INSERT", "2. SEARCH", "3. DELETE", "4. TRAVERSE ", "5. EXIT(0)");
         do {
             try {
-                printer.printMenu("TRIE", "-", menu);
+                Printer.printMenu("TRIE", "-", menu);
                 System.out.print("Please enter your option:");
                 switch (scanner.nextInt()) {
                     case 1 -> {
@@ -35,9 +35,9 @@ public class TrieTree {
                         String string = scanner.next();
                         boolean found = tree.searchString(string);
                         if (found)
-                            printer.printSuccessMessage("'" + string + "' is in the tree!");
+                            Printer.printSuccessMessage("'" + string + "' is in the tree!");
                         else
-                            printer.printFailureMessage("'" + string + "' is not in the tree!");
+                            Printer.printFailureMessage("'" + string + "' is not in the tree!");
                     }
                     case 3 -> {
                         tree.deleteString(scanner.next());
@@ -52,7 +52,7 @@ public class TrieTree {
                     default -> System.out.println("Invalid selection\nEnter any key to continue....");
                 }
             } catch (Exception e) {
-                printer.printErrorMessage(e.getMessage());
+                Printer.printErrorMessage(e.getMessage());
             }
         } while (true);
     }
@@ -109,9 +109,9 @@ public class TrieTree {
             deleteEntry(string, 0, root);
             if (root.children.get(string.charAt(0)).isEmpty())
                 root.children.remove(string.charAt(0));
-            printer.printSuccessMessage("[" + string + "] is deleted from the Trie...");
+            Printer.printSuccessMessage("[" + string + "] is deleted from the Trie...");
         } else
-            printer.printFailureMessage("[" + string + "] not found in Trie! aborting the deletion...");
+            Printer.printFailureMessage("[" + string + "] not found in Trie! aborting the deletion...");
     }
 
     private void deleteEntry(String string, int index, TrieNode node) {

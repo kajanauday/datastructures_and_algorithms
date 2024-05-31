@@ -9,15 +9,14 @@ public class Search {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        Printer printer = new Printer();
         Search search = new Search();
         int selection;
         List<String> menu = Arrays.asList("1. Linear", "2. Binary", "6. EXIT");
         while (true) {
-            printer.printMenu("SEACH", "=", menu);
+            Printer.printMenu("SEACH", "=", menu);
             System.out.print("Choose your option :");
             selection = scanner.nextInt();
-            printer.printHeader(menu.get(selection - 1), "-");
+            Printer.printHeader(menu.get(selection - 1), "-");
             System.out.print(search.nums != null ? "Do you want to continue with Existing Array[y/n]:" : "");
             if (search.nums == null || Character.toLowerCase(scanner.next().charAt(0)) == 'y') {
                 System.out.print("Enter elements :");
@@ -38,7 +37,7 @@ public class Search {
                     System.exit(0);
                 }
             }
-            printer.printFooter("-", menu.get(selection - 1).length());
+            Printer.printFooter("-", menu.get(selection - 1).length());
         }
     }
 
