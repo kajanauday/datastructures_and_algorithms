@@ -2,10 +2,12 @@ import java.util.ArrayList;
 
 public class Vertex {
    int data;
+   boolean isStartingVertex;
    ArrayList<Vertex> vertices = new ArrayList<>();
 
    public Vertex(int data) {
       this.data = data;
+      isStartingVertex = true;
    }
 
    void addEdge(int data) {
@@ -22,4 +24,5 @@ public class Vertex {
       sb.append("EOP");
       return sb.toString();
    }
+
 }

@@ -92,8 +92,9 @@ public class TrieTree {
         while (node != null) {
             System.out.print("Choose from " + node.children.keySet() + ":");
             c = scanner.next().charAt(0);
-            if (c == '$')
+            if (c == '$'){
                 return;
+            }
             if (node.children.containsKey(c)) {
                 System.out.print("Choose from " + node.children.get(c).keySet() + ":");
                 d = scanner.next().charAt(0);
