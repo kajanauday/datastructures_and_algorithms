@@ -5,9 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Stack;
-
-import javax.sound.midi.SysexMessage;
-
 import printer.Printer;
 
 public class Graph {
@@ -18,7 +15,6 @@ public class Graph {
     HashSet<Vertex> startingVertices = new HashSet<>();
     HashSet<Vertex> traversedVertices = new HashSet<>();
     HashMap<Integer, Vertex> allVertices = new HashMap<>();
-    HashSet<Vertex> listOfCreatingVertices = new HashSet<>();
 
     private void insert() {
         Vertex node, assigner;
@@ -68,6 +64,28 @@ public class Graph {
 
     }
 
+    private void traverseHandler() {
+        traversedVertices.clear();
+        queue.clear();
+        Printer.printMenu("TRAVERSAL", "_", Arrays.asList(
+                "1. BREADTH FIRST",
+                "2. DEPTH FIRST",
+                "3. MANUAL"));
+        System.out.print("CHOOSE OPTION:");
+        int option = scanner.nextInt();
+        switch (option) {
+            case 1 -> breadthFirstTraversal(startingVertex);
+            case 2 -> depthFirstTraversal(startingVertex);
+            case 3 -> manualTraversal();
+            default -> {
+                System.out.print("invalid selection\nDo you want to repeat[y/n]:");
+                char cont = scanner.next().charAt(0);
+                if (cont == 'y' || cont == 'Y')
+                    traverseHandler();
+            }
+        }
+    }
+
     private void manualTraversal() {
         boolean isUpdated = false;
         if (startingVertex != null)
@@ -106,6 +124,31 @@ public class Graph {
         }
     }
 
+    private void breadthFirstTraversal(Vertex thisVertex) {
+        if (thisVertex == null)
+            return;
+        if (!traversedVertices.contains(thisVertex)) {
+            traversedVertices.add(thisVertex);
+            for (Vertex vertex : thisVertex.vertices) {
+                queue.add(vertex);
+                System.out.print(vertex.data + ", ");
+            }
+            if (queue.size() > 0)
+                breadthFirstTraversal(queue.pop());
+        }
+    }
+
+    private void depthFirstTraversal(Vertex thisVertex) {
+        if (thisVertex == null)
+            return;
+        System.out.print(thisVertex.data + ", ");
+        traversedVertices.add(thisVertex);
+        for (Vertex v : thisVertex.vertices) {
+            if (!traversedVertices.contains(v))
+                depthFirstTraversal(v);
+        }
+    }
+
     private void modifyHandler() {
 
     }
@@ -135,45 +178,22 @@ public class Graph {
     private void depthFirstSearch(int searchingData) {
         Stack<Vertex> stack = new Stack<>();
         LinkedList<Vertex> path = new LinkedList<>();
-        Vertex top, v;
-        if (startingVertex != null)
+        Vertex top;
+        if (startingVertex != null) {
             stack.push(startingVertex);
+        }
         while (stack.size() > 0) {
             top = stack.pop();
+            while (top != startingVertex && !path.getLast().vertices.contains(top))
+                path.removeLast();
             if (top.data == searchingData) {
                 path.forEach(element -> System.out.print(element.data + ", "));
                 System.out.println(top.data);
                 return;
             }
-
-            while (top != startingVertex && !path.getLast().vertices.contains(top)) {
-                path.removeLast();
-            }
-            if (top.vertices.size() > 0)
+            if (top.vertices.size() > 0) {
                 path.add(top);
-            stack.addAll(top.vertices);
-
-        }
-    }
-
-    private void traverseHandler() {
-        traversedVertices.clear();
-        queue.clear();
-        Printer.printMenu("TRAVERSAL", "_", Arrays.asList(
-                "1. BREADTH FIRST",
-                "2. DEPTH FIRST",
-                "3. MANUAL"));
-        System.out.print("CHOOSE OPTION:");
-        int option = scanner.nextInt();
-        switch (option) {
-            case 1 -> breadthFirstTraversal(startingVertex);
-            case 2 -> depthFirstTraversal(startingVertex);
-            case 3 -> manualTraversal();
-            default -> {
-                System.out.print("invalid selection\nDo you want to repeat[y/n]:");
-                char cont = scanner.next().charAt(0);
-                if (cont == 'y' || cont == 'Y')
-                    traverseHandler();
+                stack.addAll(top.vertices);
             }
         }
     }
@@ -202,35 +222,10 @@ public class Graph {
         Printer.printFailureMessage("No such elements found (:");
     }
 
-    private void breadthFirstTraversal(Vertex thisVertex) {
-        if (thisVertex == null)
-            return;
-        if (!traversedVertices.contains(thisVertex)) {
-            traversedVertices.add(thisVertex);
-            for (Vertex vertex : thisVertex.vertices) {
-                queue.add(vertex);
-                System.out.print(vertex.data + ", ");
-            }
-            if (queue.size() > 0)
-                breadthFirstTraversal(queue.pop());
-        }
-    }
-
-    private void depthFirstTraversal(Vertex thisVertex) {
-        if (thisVertex == null)
-            return;
-        System.out.print(thisVertex.data + ", ");
-        traversedVertices.add(thisVertex);
-        for (Vertex v : thisVertex.vertices) {
-            if (!traversedVertices.contains(v))
-                depthFirstTraversal(v);
-        }
-    }
-
     public static void main(String argvs[]) {
         Graph graph = new Graph();
         List<String> menu = Arrays.asList(
-                "1.INSERT",
+                "1. INSERT",
                 "2. DELETE",
                 "3. MODIFY",
                 "4. SEARCH",
