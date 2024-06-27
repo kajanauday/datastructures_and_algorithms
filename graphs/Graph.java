@@ -2,7 +2,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -11,7 +10,6 @@ import printer.Printer;
 
 public class Graph {
     boolean printInputFormat = true;
-    // Vertex startingVertex = null;
     Scanner scanner = new Scanner(System.in);
     LinkedList<Vertex> queue = new LinkedList<>();
     ArrayList<Vertex> startingVertices = new ArrayList<>();
@@ -43,7 +41,6 @@ public class Graph {
             sep = input.indexOf("-");
             data = Integer.parseInt(input.substring(0, sep));
             neighbours = input.substring(sep + 1).split(",");
-
             if (allVertices.containsKey(data))
                 node = allVertices.get(data);
             else {
@@ -55,6 +52,8 @@ public class Graph {
                 neighbourData = Integer.parseInt(s);
                 if (!allVertices.containsKey(neighbourData))
                     allVertices.put(neighbourData, new Vertex(neighbourData));
+                else if (startingVertices.contains(allVertices.get(neighbourData)))
+                    startingVertices.remove(allVertices.get(neighbourData));
                 node.vertices.add(allVertices.get(neighbourData));
             }
         }
@@ -65,31 +64,40 @@ public class Graph {
     }
 
     private void traverseHandler() {
-        traversedVertices.clear();
-        queue.clear();
-        Printer.printMenu("TRAVERSAL", "_", Arrays.asList(
-                "1. BREADTH FIRST",
-                "2. DEPTH FIRST",
-                "3. MANUAL"));
-        System.out.print("CHOOSE OPTION:");
-        int option = scanner.nextInt();
-        switch (option) {
-            case 1 -> {
-                for (Vertex startingVertex : startingVertices)
-                    breadthFirstTraversal(startingVertex);
+        do {
+            Printer.printMenu("TRAVERSAL", "_", Arrays.asList(
+                    "1. BREADTH FIRST",
+                    "2. DEPTH FIRST",
+                    "3. MANUAL"));
+            System.out.print("CHOOSE OPTION:");
+            int option = scanner.nextInt();
+            traversedVertices.clear();
+            queue.clear();
+            switch (option) {
+                case 1 -> {
+                    for (Vertex startingVertex : startingVertices) {
+                        System.out.println("starting with vertex["+startingVertex.data + "]");
+                        System.out.print(startingVertex.data + ", ");
+                        breadthFirstTraversal(startingVertex);
+                        System.out.println();
+                    }
+                }
+                case 2 -> {
+                    for (Vertex startingVertex : startingVertices) {
+                        System.out.println("starting with vertex["+startingVertex.data + "]");
+                        depthFirstTraversal(startingVertex);
+                        System.out.println();
+                    }
+                }
+                case 3 -> manualTraversal();
+                default -> {
+                    System.out.print("invalid selection\nDo you want to repeat[y/n]:");
+                    if (Character.toLowerCase(scanner.next().charAt(0))=='y')
+                        traverseHandler();
+                }
             }
-            case 2 -> {
-                for (Vertex startingVertex : startingVertices)
-                    depthFirstTraversal(startingVertex);
-            }
-            case 3 -> manualTraversal();
-            default -> {
-                System.out.print("invalid selection\nDo you want to repeat[y/n]:");
-                char cont = scanner.next().charAt(0);
-                if (cont == 'y' || cont == 'Y')
-                    traverseHandler();
-            }
-        }
+            System.out.println("\nDo you want to continue [Yy/*] :");
+        } while (Character.toLowerCase(scanner.next().charAt(0)) == 'y');
     }
 
     private void manualTraversal() {
@@ -100,7 +108,7 @@ public class Graph {
             return;
         }
         System.out.println("initial node(s):");
-        startingVertices.forEach(element -> System.out.print(element + " "));
+        startingVertices.forEach(element -> System.out.print(element.data + " "));
         System.out.println("Choose starting Vertex to start with :");
         startingVertexToStart = scanner.nextInt();
         Vertex vertex = null;
@@ -184,11 +192,12 @@ public class Graph {
         switch (option) {
             case 1 -> {
                 for (Vertex v : startingVertices)
-                    while (breadthFirstSearch(v, scanner.nextInt())); //checkhere
+                    while (breadthFirstSearch(v, scanner.nextInt()))
+                        ; // checkhere
             }
             case 2 -> {
                 for (Vertex v : startingVertices)
-                    while (depthFirstSearch(v, scanner.nextInt())) //checkhere
+                    while (depthFirstSearch(v, scanner.nextInt())) // checkhere
                         ;
             }
             default -> {
