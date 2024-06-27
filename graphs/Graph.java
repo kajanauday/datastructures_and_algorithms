@@ -1,6 +1,8 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -9,17 +11,18 @@ import printer.Printer;
 
 public class Graph {
     boolean printInputFormat = true;
-    Vertex startingVertex = null;
+    // Vertex startingVertex = null;
     Scanner scanner = new Scanner(System.in);
     LinkedList<Vertex> queue = new LinkedList<>();
-    HashSet<Vertex> startingVertices = new HashSet<>();
+    ArrayList<Vertex> startingVertices = new ArrayList<>();
     HashSet<Vertex> traversedVertices = new HashSet<>();
     HashMap<Integer, Vertex> allVertices = new HashMap<>();
 
     private void insert() {
-        Vertex node, assigner;
+        Vertex node;
         int sep, data;
         String input;
+        int neighbourData;
         String[] neighbours;
         while (true) {
             if (printInputFormat) {
@@ -40,22 +43,19 @@ public class Graph {
             sep = input.indexOf("-");
             data = Integer.parseInt(input.substring(0, sep));
             neighbours = input.substring(sep + 1).split(",");
-            if (allVertices.size() == 0) {
-                startingVertex = node = new Vertex(data);
-                allVertices.put(data, startingVertex);
-            } else if (allVertices.containsKey(data))
+
+            if (allVertices.containsKey(data))
                 node = allVertices.get(data);
-            else
+            else {
                 node = new Vertex(data);
+                startingVertices.add(node);
+                allVertices.put(data, node);
+            }
             for (String s : neighbours) {
-                int d = Integer.parseInt(s);
-                if (allVertices.containsKey(d)) {
-                    node.vertices.add(allVertices.get(d));
-                } else {
-                    assigner = new Vertex(d);
-                    allVertices.put(d, assigner);
-                    node.vertices.add(assigner);
-                }
+                neighbourData = Integer.parseInt(s);
+                if (!allVertices.containsKey(neighbourData))
+                    allVertices.put(neighbourData, new Vertex(neighbourData));
+                node.vertices.add(allVertices.get(neighbourData));
             }
         }
     }
@@ -74,8 +74,14 @@ public class Graph {
         System.out.print("CHOOSE OPTION:");
         int option = scanner.nextInt();
         switch (option) {
-            case 1 -> breadthFirstTraversal(startingVertex);
-            case 2 -> depthFirstTraversal(startingVertex);
+            case 1 -> {
+                for (Vertex startingVertex : startingVertices)
+                    breadthFirstTraversal(startingVertex);
+            }
+            case 2 -> {
+                for (Vertex startingVertex : startingVertices)
+                    depthFirstTraversal(startingVertex);
+            }
             case 3 -> manualTraversal();
             default -> {
                 System.out.print("invalid selection\nDo you want to repeat[y/n]:");
@@ -88,13 +94,26 @@ public class Graph {
 
     private void manualTraversal() {
         boolean isUpdated = false;
-        if (startingVertex != null)
-            System.out.println("initial node:" + startingVertex.data);
-        else {
+        int startingVertexToStart;
+        if (startingVertices.isEmpty()) {
             System.out.println("Empty Graph.....");
             return;
         }
-        Vertex vertex = startingVertex;
+        System.out.println("initial node(s):");
+        startingVertices.forEach(element -> System.out.print(element + " "));
+        System.out.println("Choose starting Vertex to start with :");
+        startingVertexToStart = scanner.nextInt();
+        Vertex vertex = null;
+        for (Vertex v : startingVertices)
+            if (v.data == startingVertexToStart) {
+                vertex = v;
+                break;
+            }
+        if (vertex == null) {
+            System.out.println("Invalid Starting Vertex....");
+            manualTraversal();
+            return;
+        }
         String data;
         int intData;
         while (true) {
@@ -106,9 +125,10 @@ public class Graph {
             data = scanner.next();
             if (data.equalsIgnoreCase("end"))
                 break;
-            else if (data.equalsIgnoreCase("reset"))
-                vertex = startingVertex;
-            else {
+            else if (data.equalsIgnoreCase("reset")) {
+                manualTraversal();
+                return;
+            } else {
                 intData = Integer.parseInt(data);
                 for (Vertex v : vertex.vertices) {
                     if (v.data == intData) {
@@ -162,9 +182,14 @@ public class Graph {
         int option = scanner.nextInt();
         System.out.print("Enter data to search :");
         switch (option) {
-            case 1 -> breadthFirstSearch(scanner.nextInt());
+            case 1 -> {
+                for (Vertex v : startingVertices)
+                    while (breadthFirstSearch(v, scanner.nextInt())); //checkhere
+            }
             case 2 -> {
-                depthFirstSearch(scanner.nextInt());
+                for (Vertex v : startingVertices)
+                    while (depthFirstSearch(v, scanner.nextInt())) //checkhere
+                        ;
             }
             default -> {
                 System.out.print("invalid selection\nDo you want to repeat[y/n]:");
@@ -175,7 +200,7 @@ public class Graph {
         }
     }
 
-    private void depthFirstSearch(int searchingData) {
+    private boolean depthFirstSearch(Vertex startingVertex, int searchingData) {
         Stack<Vertex> stack = new Stack<>();
         LinkedList<Vertex> path = new LinkedList<>();
         Vertex top;
@@ -189,37 +214,64 @@ public class Graph {
             if (top.data == searchingData) {
                 path.forEach(element -> System.out.print(element.data + ", "));
                 System.out.println(top.data);
-                return;
+                return true;
             }
             if (top.vertices.size() > 0) {
                 path.add(top);
                 stack.addAll(top.vertices);
             }
         }
+        System.out.println(searchingData + " is not found in the graph!");
+        return false;
     }
 
-    private void breadthFirstSearch(int data) {
+    private boolean breadthFirstSearch(Vertex startingVertex, int searchingData) {
+        Stack<Vertex> stack = new Stack<>();
+        Stack<Vertex> path = new Stack<>();
+        Vertex vv;
         Vertex vertex;
         if (startingVertex != null)
             queue.add(startingVertex);
         while (queue.size() > 0) {
             vertex = queue.pop();
-            if (vertex.data == data) {
-                System.out.println(data + " found :)");
-                return;
+            stack.add(vertex);
+            if (vertex.data == searchingData) {
+                System.out.println(searchingData + " found :)");
+                path.add(vertex);
+                while (stack.size() > 0) {
+                    vv = stack.pop();
+                    if (vv.vertices.contains(path.peek()))
+                        ;
+                    path.add(vv);
+                }
+                while (path.size() > 0) {
+                    System.out.print(path.pop() + "-> ");
+                }
+                return true;
             }
             for (Vertex v : vertex.vertices) {
                 if (!traversedVertices.contains(v)) {
                     traversedVertices.add(v);
                     queue.add(v);
                 }
-                if (v.data == data) {
-                    Printer.printSuccessMessage(data + " found :)");
-                    return;
+                if (v.data == searchingData) {
+                    System.out.println(searchingData + " found :)");
+                    path.add(vertex);
+                    while (stack.size() > 0) {
+                        vv = stack.pop();
+                        if (vv.vertices.contains(path.peek()))
+                            ;
+                        path.add(vv);
+                    }
+                    while (path.size() > 0) {
+                        System.out.print(path.pop() + "-> ");
+                    }
+                    return true;
                 }
             }
         }
         Printer.printFailureMessage("No such elements found (:");
+        return false;
     }
 
     public static void main(String argvs[]) {
